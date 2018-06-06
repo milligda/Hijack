@@ -1,0 +1,35 @@
+// start is a page with "buttons" that generate gifs
+
+    -  need to style the page
+    -  need to populate the buttons
+    -  need to connect to an api
+    -  need to populate the gifs based on what is clicked
+
+// clicking on a gif will clear the page and bring up the hijack
+
+    -  present alice's initial message - using a typewriter style plugin
+    -  present the name input and fields
+    -  read the user's name from the input field and store it
+    -  alice types hello to the user
+    -  alice says hello to the user
+    -  alice asks the user to think of something big and presents the search input and buttons
+    -  store the user's search input as a variable
+    -  use the search variable and contact the flickr api to generate images
+    -  take the returned images and store them so that they can be stored in a carousel
+    -  alice asks if they want to try again
+    -  if they click yes - present the input field and loop through this step again
+    -  if they click no - start alice's lesson
+
+// alice's lesson is started when the user says they don't want to try again
+
+    -  everything fades away
+    -  images of mars are faded in and out of the background
+    -  music is played in the background
+    -  alice starts saying her lesson
+
+// when the lesson ends, the user is "dropped" back to the basic page
+
+    -  need to style the page
+    -  need to populate the buttons
+    -  need to make sure the buttons are connected to an api
+    -  need to present "something" when a button is clicked
