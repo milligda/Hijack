@@ -3,6 +3,8 @@ $(document).ready(function() {
     var userName;
     var searchTerm;
     var bgAnimationLength = 2000;
+    var marsIntervalID;
+    var marsPhotoID = 0;
 
     $("#start-alice-button").on("click", function() {
 
@@ -177,10 +179,21 @@ $(document).ready(function() {
         // part 3 of alice's lesson
         var lessonMessage3 = "I will be watching, and I will be here to help."
 
-        
+        marsIntervalID = setInterval(function() {
 
+            marsPhotoID++;
 
+            $(".page-container").animate({
+                opacity: 1, 
+            }, 1000 * 3);
 
+            $(".page-container").css("background-image", `url("assets/images/mars/mars-${marsPhotoID}.jpg")`);
+
+            $(".page-container").animate({
+                opacity: 0, 
+            }, 1000 * 5);
+
+        }, 1000 * 8);
     }
 
     $("#search-button").on("click", function(event) {
@@ -194,7 +207,7 @@ $(document).ready(function() {
 
     });
 
-    $("#start-alice-lesson").on("click", function() {
+    $("#start-lesson-button").on("click", function() {
 
         // clear the images carousel
 
@@ -204,6 +217,10 @@ $(document).ready(function() {
         // fade the background back to black
         $("body").animate({
             backgroundColor: "#111111",
+        }, bgAnimationLength);
+
+        $(".page-container").animate({
+            opacity: 0
         }, bgAnimationLength);
 
         // start aliceLesson
