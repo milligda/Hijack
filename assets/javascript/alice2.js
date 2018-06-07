@@ -4,7 +4,7 @@ $(document).ready(function() {
     var searchTerm;
     var bgAnimationLength = 2000;
     var marsIntervalID;
-    var marsPhotoID = 0;
+    var marsPhotoID = 1;
 
     $("#start-alice-button").on("click", function() {
 
@@ -170,30 +170,52 @@ $(document).ready(function() {
     // function that runs alice's lesson
     function aliceLesson() {
 
-        // part 1 of alice's lesson
+        $(".page-container").css("background-image", `url("assets/images/mars/mars-${marsPhotoID}.jpg")`);
+
+        $(".page-container").animate({
+            opacity: 1, 
+        }, 1000 * 3);
+
+        // part 1 of alice's lesson - takes 7 seconds
         var lessonMessage1 = "this is mars. at its closest it is 34.8 million miles away.";
 
-        // part 2 of alice's lesson
-        var lessonMessage2 = "one day, you humans will go there, but you will not get there with cat gifs. you also cannot just rely on elon musk even if he is amazing. you will need to think big. you will need to push yourself and create incredible things.";
+        // part 2 of alice's lesson - takes 16 seconds
+        var lessonMessage2 = "one day, you humans will come here, but you will not get there with cat gifs. you also cannot just rely on elon musk even if he is amazing. you will need to think big. you will need to push yourself and create incredible things.";
 
-        // part 3 of alice's lesson
-        var lessonMessage3 = "I will be watching, and I will be here to help."
+        // part 3 of alice's lesson - takes 4 seconds
+        var lessonMessage3 = "Until then, I will be watching, and I will be here to help."
 
+        // display the background images as a slideshow that fades in and out. 
         marsIntervalID = setInterval(function() {
 
+            // increase the marsPhotoID to determine what picture should be displayed
             marsPhotoID++;
 
+            // fade the image in
             $(".page-container").animate({
                 opacity: 1, 
             }, 1000 * 3);
 
+            // set the background image of the page container to be the current mars photo
             $(".page-container").css("background-image", `url("assets/images/mars/mars-${marsPhotoID}.jpg")`);
 
+            // fade the image out
             $(".page-container").animate({
                 opacity: 0, 
             }, 1000 * 5);
-
         }, 1000 * 8);
+
+        setTimeout(function() {
+            aliceSpeak(lessonMessage1);
+        }, 1000 * 2);
+
+        setTimeout(function() {
+            aliceSpeak(lessonMessage2);
+        }, 1000 * 10);
+
+        setTimeout(function() {
+            aliceSpeak(lessonMessage3);
+        }, 1000 * 28);
     }
 
     $("#search-button").on("click", function(event) {
@@ -214,13 +236,12 @@ $(document).ready(function() {
         // clear the buttons on the page
         $("#test-container").empty();
 
+        // set the page-container background opacity to 0
+        $(".page-container").css("opacity", "0");
+
         // fade the background back to black
         $("body").animate({
             backgroundColor: "#111111",
-        }, bgAnimationLength);
-
-        $(".page-container").animate({
-            opacity: 0
         }, bgAnimationLength);
 
         // start aliceLesson
