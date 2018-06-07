@@ -35,9 +35,16 @@ $(document).ready(function() {
     }
 
     function aliceIntroduction() {
-        
+        var app = document.getElementById('alice-speech');
+
+        var typewriter = new Typewriter(app, {
+             loop: true
+        });
+
+        typewriter.typeString('To whom do I have the pleasure of speaking?')
+        .start();
         // diplay alice's introduction message on the screen
-        $("#alice-speech").text("To whom do I have the pleasure of speaking?");
+       // $("#alice-speech").text("To whom do I have the pleasure of speaking?");
 
         // display the name-input field after the user has a chance to read the introduction message
         setTimeout(function() {
