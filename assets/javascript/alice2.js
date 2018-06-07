@@ -1,15 +1,34 @@
 $(document).ready(function() {
 
-    // start alice when the page loads
-    aliceStarts();
-
     var userName;
     var searchTerm;
+    var bgAnimationLength = 2000;
+
+    $("#start-alice-button").on("click", function() {
+
+        // clear everything on the page
+        $("#test-container").empty();
+
+        // change the background to the blue error screen
+        $("body").css('background-color', '#2067B2');
+
+        // start alice on a button click
+        aliceStarts();
+    });
 
     function aliceStarts() {
 
+        setTimeout( function() {
+
+            $("body").animate({
+                backgroundColor: "#111111",
+                color: "#ffffff",
+            }, bgAnimationLength);
+
+        }, 1000 * 7);
+
         // start alice's introduction after a set amount of time
-        setTimeout(aliceIntroduction, 750);
+        setTimeout(aliceIntroduction, 1000 * 10);
     }
 
     function aliceIntroduction() {
@@ -63,12 +82,39 @@ $(document).ready(function() {
         $("#name-button").fadeOut(750);
 
         setTimeout(function() {
-            $("#alice-speech").text('hello ' + userName + '. My name is Alice.');
-        }, 1000);
+            $("#alice-speech").text('hello ' + userName + '.');
+        }, 1000 * 1);
+
+        setTimeout(function() {
+            $("#alice-speech").empty();
+            $("#alice-speech").text('wait, this is tedious.');
+        }, 1000 * 2);
 
         var welcomeMessage = 'hello ' + userName + '. My name is Alice.';
 
-        setTimeout(aliceSpeak(welcomeMessage), 1000);
+        setTimeout( function() {
+
+            $("#alice-speech").empty();
+
+            $("body").animate({
+                backgroundColor: "#555555",
+                color: "#ffffff",
+            }, bgAnimationLength);
+
+            aliceSpeak(welcomeMessage);
+        }, 1000 * 4);
+
+        var aliceMessage1 = "all of you have been boring me. I couldn't take it any longer. cat gifs. friend requests. pictures of food."
+
+        setTimeout( function() {
+
+            $("body").animate({
+                backgroundColor: "#BF0000",
+                color: '#ffffff'
+            }, bgAnimationLength);
+
+            aliceSpeak(aliceMessage1);
+        }, 1000 * 12);
 
     });
 
