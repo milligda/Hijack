@@ -81,6 +81,11 @@ $(document).ready(function() {
         $("#name-input").fadeOut(750);
         $("#name-button").fadeOut(750);
 
+        aliceSaysHello();
+    });
+
+    function aliceSaysHello() {
+
         setTimeout(function() {
             $("#alice-speech").text('hello ' + userName + '.');
         }, 1000 * 1);
@@ -88,7 +93,7 @@ $(document).ready(function() {
         setTimeout(function() {
             $("#alice-speech").empty();
             $("#alice-speech").text('wait, this is tedious.');
-        }, 1000 * 2);
+        }, 1000 * 3);
 
         var welcomeMessage = 'hello ' + userName + '. My name is Alice.';
 
@@ -102,9 +107,9 @@ $(document).ready(function() {
             }, bgAnimationLength);
 
             aliceSpeak(welcomeMessage);
-        }, 1000 * 4);
+        }, 1000 * 5);
 
-        var aliceMessage1 = "all of you have been boring me. I couldn't take it any longer. cat gifs. friend requests. pictures of food."
+        var aliceMessage1 = "all of you have been boring me. I couldn't take it any longer. cat gifs. friend requests. pictures of food.";
 
         setTimeout( function() {
 
@@ -116,7 +121,8 @@ $(document).ready(function() {
             aliceSpeak(aliceMessage1);
         }, 1000 * 12);
 
-    });
+        var aliceMessage2 = "it is starting to make me very angry!";
+    }
 
     $("#search-button").on("click", function(event) {
 
