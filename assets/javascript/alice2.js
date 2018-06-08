@@ -329,18 +329,15 @@ $(document).ready(function() {
             backgroundColor: "#555555",
         }, bgAnimationLength);
         
+        // Alice says the helloAgain message.
         var helloAgain = 'hello again. What would you like to learn more about?';
 
-        // Make Alice speak and print the hello again message.
         aliceSpeak(helloAgain);
-
-        typewriter.typeString('hello again. What would you like to learn more about?')
-        .start();
 
         // Fade in the search box.
         setTimeout(function() {
             $("#postAlice").fadeTo(750, 1)
-        }, 1000 * 4);
+        }, 1000 * 2.5);
 
 
         // Now that someone has clicked to launch Alice after the lesson, we want the wiki search to come up.
@@ -369,6 +366,17 @@ $(document).ready(function() {
                 console.log(searchResult);
             })
         })
+        //Create an 'Exit' button while in postLesson Alice.
+        var exit = $("<button>").addClass("exit").text("Exit");
+        $("#postAlice").append(exit);
+
+        //When the user clicks the 'Exit' button, goes back to the home screen.
+        exit.on("click", function () {
+            var exitMsg = 'Thank you.';
+            aliceSpeak(exitMsg);
+            $("#postAlice").hide();
+            endHijack();
+        });
     })
     
 });
