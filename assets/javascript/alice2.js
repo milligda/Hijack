@@ -5,6 +5,10 @@ $(document).ready(function() {
     var bgAnimationLength = 2000;
     var marsIntervalID;
     var marsPhotoID = 1;
+    var typeText = document.getElementById('alice-speech');
+    var typewriter = new Typewriter(typeText, {
+             loop: false
+        });
 
     $("#start-alice-button").on("click", function() {
 
