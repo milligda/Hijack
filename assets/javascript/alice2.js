@@ -47,7 +47,7 @@ $(document).ready(function() {
              //displays alice-speech container
             $("#alice-speech").css("opacity","1");
 
-        }, 1000 * 10);
+        }, 1000 * 9.5);
 
         // start alice's introduction after a set amount of time
         setTimeout(aliceIntroduction, 1000 * 10);
