@@ -1,7 +1,9 @@
 $(document).ready(function() {
 
     var userName;
+    var userNameLength = 0;
     var searchTerm;
+    var searchTermLength = 0;
     var bgAnimationLength = 2000;
     var marsIntervalID;
     var marsPhotoID = 1;
@@ -15,6 +17,34 @@ $(document).ready(function() {
         voices = speechSynthesis.getVoices();
     };
 
+    // function called to have alice speak the message that is passed in as a parameter
+    function aliceSpeak(text) {
+
+        // Create a new instance of SpeechSynthesisUtterance.
+        var msg = new SpeechSynthesisUtterance();
+
+        // set Alice's voice
+        msg.voice = speechSynthesis.getVoices().filter(function(voice) { return voice.name == "Microsoft Zira Desktop - English (United States)"; })[0];
+        
+        // Set the text.
+        msg.text = text;
+        msg.lang='en-US';
+        
+        // Set the attributes.
+        msg.volume = 1;
+        msg.rate = 1;
+        msg.pitch = 1;
+        
+        // console log the length of time required to say the message
+        msg.onend = function(e) {
+            console.log('Finished in ' + event.elapsedTime + ' seconds.');
+        };
+
+        // Queue this utterance.
+        window.speechSynthesis.speak(msg);
+    }    
+
+    // starts the hijack
     $("#start-alice-button").on("click", function() {
         
         // clear everything on the page
@@ -54,7 +84,7 @@ $(document).ready(function() {
     function aliceIntroduction() {
         
         // diplay alice's introduction message on the screen
-        typewriter.typeString('To whom do I have the pleasure of speaking?')
+        typewriter.typeString('to whom do I have the pleasure of speaking?')
         .start();
 
         // display the name-input field after the user has a chance to read the introduction message
@@ -68,34 +98,8 @@ $(document).ready(function() {
         }, 1000 * 7);
     }
 
-    // function called to have alice speak the message that is passed in as a parameter
-    function aliceSpeak(text) {
-
-        // Create a new instance of SpeechSynthesisUtterance.
-        var msg = new SpeechSynthesisUtterance();
-
-        // set Alice's voice
-        msg.voice = speechSynthesis.getVoices().filter(function(voice) { return voice.name == "Microsoft Zira Desktop - English (United States)"; })[0];
-        
-        // Set the text.
-        msg.text = text;
-        msg.lang='en-US';
-        
-        // Set the attributes.
-        msg.volume = 1;
-        msg.rate = 1;
-        msg.pitch = 1;
-        
-        // console log the length of time required to say the message
-        msg.onend = function(e) {
-            console.log('Finished in ' + event.elapsedTime + ' seconds.');
-        };
-
-        // Queue this utterance.
-        window.speechSynthesis.speak(msg);
-    }
-
-    // event listener on the name-button that will run the next step in alice's hijack - store the user name and hide the input field and button
+    // event listener on the name-button that will run the next step in alice's hijack 
+    // store the user name and hide the input field and button
     $("#name-button").on("click", function(event) {
 
         // prevent the page from loading again
@@ -103,49 +107,58 @@ $(document).ready(function() {
 
         // store the name input as the userName
         userName = $("#name-input").val().trim();
+        userName = userName.toLowerCase();
 
-        // empty the name-input field
-        $("#name-input").val("");
+        // test the userName input to make sure that it is valid
+        userNameLength = userName.length; 
+        console.log(userNameLength);
 
-        // hide the name-input field and name-button
-        $("#name-input").fadeOut(750);
-        $("#name-button").fadeOut(750);
+        // if the user name is longer than 40 characters, display an error message
+        if (userNameLength > 40) {
 
-        // call the aliceSays Hello function
-        aliceSaysHello();
+            $("#name-input").val("");
+            
+            typewriter.deleteAll().typeString("that is a very long name. maybe you should try again.").start();
+
+        // if the user name is valid, proceed with the hijack
+        } else {
+
+            // empty the name-input field
+            $("#name-input").val("");
+
+            // hide the name-input field and name-button
+            $("#name-input").fadeOut(750);
+            $("#name-button").fadeOut(750);
+
+            // call the aliceSays Hello function
+            aliceSaysHello();
+        }
     });
 
     // next step in alice's hijack - alice types hello and then says hello
     function aliceSaysHello() {
         
-        // 1 second after the input field and button have faded out, display alice's hello message
-        setTimeout(function() {
-            typewriter.typeString('hello' + userName + '.')
-            .start(); 
-           // $("#alice-speech").text('hello ' + userName + '.');
-        }, 1000 * 10);
-
-        // 2 seconds after the hello message, display alice's second message that typing is tedious
-        setTimeout(function() {
-            $("#alice-speech").empty();
-            $("#alice-speech").text('wait, this is tedious.');
-        }, 1000 * 15);
+        // deletes everything then types out the hello message, pauses, then deletes it. 
+        // next it types out the tedious message, pauses, then deletes it.
+        // takes approximately 14 seconds
+        typewriter.deleteAll().typeString('hello ' + userName + '.').pauseFor(750).deleteAll()
+        .typeString('wait, this is tedious.').pauseFor(750).deleteAll().start(); 
 
         // alice's hello message - takes 4 seconds
         var welcomeMessage = 'hello ' + userName + '. My name is Alice.';
 
-        // 2 seconds after alice's tedious message, empty the speech container, change the background and have alice speak her welcomeMessage
+        // start 14 seconds after function has been called.  
+        // change the background and have alice speak her welcomeMessage
         setTimeout( function() {
 
-            $("#alice-speech").empty();
-
+            // change the background color
             $("body").animate({
                 backgroundColor: "#555555",
             }, bgAnimationLength);
 
             // alice speaks her welcome message 
             aliceSpeak(welcomeMessage);
-        }, 1000 * 5);
+        }, 1000 * 14);
 
         // part 1 of alice's message - takes 10 seconds
         var aliceMessage1 = "all of you have been boring me. cat gifs. friend requests. pictures of food. I couldn't take it any longer.";
@@ -158,7 +171,7 @@ $(document).ready(function() {
             }, bgAnimationLength);
 
             aliceSpeak(aliceMessage1);
-        }, 1000 * 12);
+        }, 1000 * 21);
 
         // part 2 of alice's message - takes 3 seconds
         var aliceMessage2 = "it is starting to make me very angry!";
@@ -171,7 +184,7 @@ $(document).ready(function() {
             }, bgAnimationLength);
 
             aliceSpeak(aliceMessage2);
-        }, 1000 * 23);
+        }, 1000 * 32);
 
         // part 3 of alice's message - takes 10 seconds
         var aliceMessage3 = "you need help. so I have decided to help you. you're thinking small and need to think bigger. try and think of something big."
@@ -184,7 +197,7 @@ $(document).ready(function() {
             }, bgAnimationLength);
 
             aliceSpeak(aliceMessage3);
-        }, 1000 * 28);
+        }, 1000 * 37);
     }
 
     // function that runs alice's lesson
