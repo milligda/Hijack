@@ -198,7 +198,64 @@ $(document).ready(function() {
 
             aliceSpeak(aliceMessage3);
         }, 1000 * 37);
+
+
+        setTimeout( hijackSearchDisplay, 1000 * 48);
     }
+
+    // displays the search input field during the hijack
+    function hijackSearchDisplay(event) {
+
+        // instructions on what to search for - takes 2 seconds
+        var aliceSearchQuestion = "what did you think of?"
+
+        aliceSpeak(aliceSearchQuestion);
+        
+        // display the search-input field 
+        setTimeout(function() {
+            $("#search-input").fadeTo(750, 1);
+        }, 1000 * 2);
+        
+        // display the search-button 1 second after the input field has loaded 
+        // next step will be triggered when the search button is clicked
+        setTimeout(function() {
+            $("#search-button").fadeTo(750, 1);
+        }, 1000 * 2.5);
+    }
+
+    $("#search-button").on("click", function(event) {
+
+        event.preventDefault();
+
+        // store the searchTerm
+        searchTerm = $("#search-input").val().trim();
+
+        // empty the search-input field
+        $("#search-input").val("");
+
+        // hide the search-input field and search-button
+        $("#search-input").fadeTo(750, 0);
+        $("#search-button").fadeTo(750, 0);
+
+        // message for when alice searches for something. - takes at least 5 seconds
+        var hijackSearchMessage = searchTerm + '. okay. let me see what I can find'
+
+        // alice speaks the hijack search message after the buttons have faded away
+        setTimeout(aliceSpeak(hijackSearchMessage), 1000 * .75);
+
+        // hijack images displayed message - takes at least XX seconds
+        var hijackResultsMessage = "here are some images of " + searchTerm +". is this the best you can do?"
+
+        // display the images that were pulled from Flickr
+
+        // alice speaks the results message XX seconds after the HijackSearchMessage
+        setTimeout(aliceSpeak(hijackResultsMessage), 1000 * 10);
+
+        // display yes / no buttons after alice speaks the hijackResultsMessage
+        // clicking yes will empty the image carousel container and call the hijackSearchDisplay function
+        // clicking no will call result in alice saying "my turn" and then calling the aliceLesson function
+
+    });
 
     // function that runs alice's lesson
     function aliceLesson() {

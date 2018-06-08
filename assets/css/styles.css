@@ -49,6 +49,14 @@ body {
     background-color: #c2c2c2;
 }
 
+.alice-input:focus {
+    outline: none;
+}
+
+.alice-button:focus {
+    outline: none;
+}
+
 #name-input, #name-button, #search-input, #search-button {
     display: none;
 }
