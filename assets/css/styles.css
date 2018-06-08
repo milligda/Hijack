@@ -51,3 +51,7 @@ body {
 #name-input, #name-button, #search-input, #search-button {
     display: none;
 }
+
+#alice-speech {
+    opacity: 0;
+}

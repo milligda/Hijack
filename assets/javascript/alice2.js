@@ -16,28 +16,35 @@ $(document).ready(function() {
     };
 
     $("#start-alice-button").on("click", function() {
-
+        
         // clear everything on the page
         $("#test-container").empty();
 
         // change the background to the blue error screen
         $("body").css('background-color', '#2067B2');
 
+        
         // start alice
         aliceStarts();
     });
 
     function aliceStarts() {
+        
+       
 
         // alice starts by transitioning the background color to a shade of black
         setTimeout( function() {
-
-            $("body").animate({
+                $("body").animate({
                 backgroundColor: "#111111",
                 color: "#ffffff",
             }, bgAnimationLength);
 
         }, 1000 * 7);
+
+        setTimeout( function() {
+             //displays alice-speech container
+            $("#alice-speech").css("opacity","1");
+        }, 1000 * 10);
 
         // start alice's introduction after a set amount of time
         setTimeout(aliceIntroduction, 1000 * 10);
@@ -110,17 +117,19 @@ $(document).ready(function() {
 
     // next step in alice's hijack - alice types hello and then says hello
     function aliceSaysHello() {
-
+        
         // 1 second after the input field and button have faded out, display alice's hello message
         setTimeout(function() {
-            $("#alice-speech").text('hello ' + userName + '.');
-        }, 1000 * 1);
+            typewriter.typeString('hello' + userName + '.')
+            .start(); 
+           // $("#alice-speech").text('hello ' + userName + '.');
+        }, 1000 * 10);
 
         // 2 seconds after the hello message, display alice's second message that typing is tedious
         setTimeout(function() {
             $("#alice-speech").empty();
             $("#alice-speech").text('wait, this is tedious.');
-        }, 1000 * 3);
+        }, 1000 * 15);
 
         // alice's hello message - takes 4 seconds
         var welcomeMessage = 'hello ' + userName + '. My name is Alice.';
@@ -259,6 +268,39 @@ $(document).ready(function() {
         aliceLesson();
     });
 
+    //Until someone clicks on the post-lesson button, hide the search form.
+    $("#postAlice").hide();
 
+    $("#afterLesson").on("click", function () {
+        
+        var helloAgain = 'hello again. What would you like to learn more about?';
 
+        aliceSpeak(helloAgain);
+        
+        $("#postAlice").show();
+
+        //Now that someone has clicked to launch Alice after the lesson, we want the wiki search to come up.
+        $("#postAlice-btn").on("click", function () {
+        
+            var searchTerm = $("#searchTerm").val().trim();
+            
+            var queryURL = "https://en.wikipedia.org/w/api.php?action=opensearch&search=" + searchTerm + "&origin=*&prop=info&rvprop=content&format=json&formatversion=2";
+          
+            $.ajax ( {
+                url: queryURL,
+                method: "GET"
+            }).then(function(response) {
+                console.log(response);
+        
+                var searchResult = response[2]["0"];
+                
+                setTimeout( function() {
+                    aliceSpeak(searchResult);
+                }, 1000 * 2);
+                
+                console.log(searchResult);
+            })
+        })
+    })
+    
 });
