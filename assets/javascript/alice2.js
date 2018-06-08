@@ -9,30 +9,37 @@ $(document).ready(function() {
     var typewriter = new Typewriter(typeText, {
              loop: false
         });
-
+    
     $("#start-alice-button").on("click", function() {
-
+        
         // clear everything on the page
         $("#test-container").empty();
 
         // change the background to the blue error screen
         $("body").css('background-color', '#2067B2');
 
+        
         // start alice
         aliceStarts();
     });
 
     function aliceStarts() {
+        
+       
 
         // alice starts by transitioning the background color to a shade of black
         setTimeout( function() {
-
-            $("body").animate({
+                $("body").animate({
                 backgroundColor: "#111111",
                 color: "#ffffff",
             }, bgAnimationLength);
 
         }, 1000 * 7);
+
+        setTimeout( function() {
+             //displays alice-speech container
+            $("#alice-speech").css("opacity","1");
+        }, 1000 * 10);
 
         // start alice's introduction after a set amount of time
         setTimeout(aliceIntroduction, 1000 * 10);
@@ -105,17 +112,19 @@ $(document).ready(function() {
 
     // next step in alice's hijack - alice types hello and then says hello
     function aliceSaysHello() {
-
+        
         // 1 second after the input field and button have faded out, display alice's hello message
         setTimeout(function() {
-            $("#alice-speech").text('hello ' + userName + '.');
-        }, 1000 * 1);
+            typewriter.typeString('hello' + userName + '.')
+            .start(); 
+           // $("#alice-speech").text('hello ' + userName + '.');
+        }, 1000 * 10);
 
         // 2 seconds after the hello message, display alice's second message that typing is tedious
         setTimeout(function() {
             $("#alice-speech").empty();
             $("#alice-speech").text('wait, this is tedious.');
-        }, 1000 * 3);
+        }, 1000 * 15);
 
         // alice's hello message - takes 4 seconds
         var welcomeMessage = 'hello ' + userName + '. My name is Alice.';
