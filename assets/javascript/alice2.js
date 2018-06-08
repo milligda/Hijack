@@ -255,6 +255,6 @@ $(document).ready(function() {
         aliceLesson();
     });
 
-
+    $("#postAlice").hide();
 
 });
