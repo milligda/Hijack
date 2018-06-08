@@ -371,20 +371,38 @@ $(document).ready(function() {
         aliceLesson();
     });
 
-    //Until someone clicks on the post-lesson button, hide the search form.
+    // Until someone clicks on the post-lesson button, hide the search form.
     $("#postAlice").hide();
 
+    // On Post Alice button click...
     $("#afterLesson").on("click", function () {
+        
+        // Enter back into the Alice screen
+        $("#test-container").empty();
+
+        // Fade into experience again.
+        // Make background gray and fade in the text and search box
+        $("body").animate({
+            backgroundColor: "#555555",
+        }, bgAnimationLength);
         
         var helloAgain = 'hello again. What would you like to learn more about?';
 
+        // Make Alice speak and print the hello again message.
         aliceSpeak(helloAgain);
-        
-        $("#postAlice").show();
 
-        //Now that someone has clicked to launch Alice after the lesson, we want the wiki search to come up.
+        typewriter.typeString('hello again. What would you like to learn more about?')
+        .start();
+
+        // Fade in the search box.
+        setTimeout(function() {
+            $("#postAlice").fadeTo(750, 1)
+        }, 1000 * 4);
+
+
+        // Now that someone has clicked to launch Alice after the lesson, we want the wiki search to come up.
         $("#postAlice-btn").on("click", function () {
-        
+
             var searchTerm = $("#searchTerm").val().trim();
             
             var queryURL = "https://en.wikipedia.org/w/api.php?action=opensearch&search=" + searchTerm + "&origin=*&prop=info&rvprop=content&format=json&formatversion=2";
@@ -396,11 +414,15 @@ $(document).ready(function() {
                 console.log(response);
         
                 var searchResult = response[2]["0"];
+
+                // alice speaks the search result information.
+                aliceSpeak(searchResult);
                 
-                setTimeout( function() {
-                    aliceSpeak(searchResult);
-                }, 1000 * 2);
+                var afterSearch = 'I hope that was helpful. Would you like to learn about something else?';
                 
+                // alice speaks the after search message, prompting the user for next step.
+                aliceSpeak(afterSearch);
+
                 console.log(searchResult);
             })
         })
