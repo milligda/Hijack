@@ -34,6 +34,7 @@ $(document).ready(function() {
 
         // alice starts by transitioning the background color to a shade of black
         setTimeout( function() {
+
                 $("body").animate({
                 backgroundColor: "#111111",
                 color: "#ffffff",
@@ -42,8 +43,10 @@ $(document).ready(function() {
         }, 1000 * 7);
 
         setTimeout( function() {
+
              //displays alice-speech container
             $("#alice-speech").css("opacity","1");
+
         }, 1000 * 10);
 
         // start alice's introduction after a set amount of time
@@ -52,10 +55,9 @@ $(document).ready(function() {
 
     function aliceIntroduction() {
         
+        // diplay alice's introduction message on the screen
         typewriter.typeString('To whom do I have the pleasure of speaking?')
         .start();
-        // diplay alice's introduction message on the screen
-       // $("#alice-speech").text("To whom do I have the pleasure of speaking?");
 
         // display the name-input field after the user has a chance to read the introduction message
         setTimeout(function() {
@@ -190,52 +192,85 @@ $(document).ready(function() {
     // function that runs alice's lesson
     function aliceLesson() {
 
+        // part 1 of alice's lesson - takes 6 seconds
+        var lessonMessage1 = "this is mars. at its closest it is 34.8 million miles away.";
+
+        // part 2 of alice's lesson - takes 17 seconds
+        var lessonMessage2 = "one day, you humans will come here, but you will not get there by creating cat gifs. you also cannot just rely on elon musk even if he is amazing. you will need to think big. you will need to push yourself and create incredible things.";
+
+        // part 3 of alice's lesson - takes 5 seconds
+        var lessonMessage3 = "Until then, I will be watching, and I will be here to help."
+
+        // set the initial image for the page-container
         $(".page-container").css("background-image", `url("assets/images/mars/mars-${marsPhotoID}.jpg")`);
 
+        // change the opacity of the page container so that the image fades in
         $(".page-container").animate({
             opacity: 1, 
         }, 1000 * 3);
 
-        // part 1 of alice's lesson - takes 7 seconds
-        var lessonMessage1 = "this is mars. at its closest it is 34.8 million miles away.";
+        // display the initial image of mars
+        setTimeout(displayMarsPhotos, 1000 * 1);
 
-        // part 2 of alice's lesson - takes 16 seconds
-        var lessonMessage2 = "one day, you humans will come here, but you will not get there with cat gifs. you also cannot just rely on elon musk even if he is amazing. you will need to think big. you will need to push yourself and create incredible things.";
+        // alice speaks part 1 of her lesson
+        setTimeout(function() {
+            aliceSpeak(lessonMessage1);
+        }, 1000 * 2);
 
-        // part 3 of alice's lesson - takes 4 seconds
-        var lessonMessage3 = "Until then, I will be watching, and I will be here to help."
+        // alice speaks part 2 of her lesson
+        setTimeout(function() {
+            aliceSpeak(lessonMessage2);
+        }, 1000 * 9);
 
+        // alice speaks part 3 of her lesson
+        setTimeout(function() {
+            aliceSpeak(lessonMessage3);
+        }, 1000 * 27);
+
+        // at the end of the lesson, call the endHijack function
+        setTimeout(function() {
+            endHijack() 
+        }, 1000 * 32);
+    }
+
+    function displayMarsPhotos () {
+        
         // display the background images as a slideshow that fades in and out. 
         marsIntervalID = setInterval(function() {
 
             // increase the marsPhotoID to determine what picture should be displayed
             marsPhotoID++;
 
-            // fade the image in
-            $(".page-container").animate({
-                opacity: 1, 
+            // set the background image of the page container to be the current mars photo
+            setTimeout(function() {
+                $(".page-container").css("background-image", `url("assets/images/mars/mars-${marsPhotoID}.jpg")`);
             }, 1000 * 3);
 
-            // set the background image of the page container to be the current mars photo
-            $(".page-container").css("background-image", `url("assets/images/mars/mars-${marsPhotoID}.jpg")`);
+            // fade the image in
+            $(".page-container").animate({
+                opacity: 0, 
+            }, 1000 * 3);
 
             // fade the image out
             $(".page-container").animate({
-                opacity: 0, 
-            }, 1000 * 5);
-        }, 1000 * 8);
+                opacity: 1, 
+            }, 1000 * 3);
+        }, 1000 * 6);
+    }
 
-        setTimeout(function() {
-            aliceSpeak(lessonMessage1);
-        }, 1000 * 2);
+    function endHijack() {
 
-        setTimeout(function() {
-            aliceSpeak(lessonMessage2);
-        }, 1000 * 10);
+        // end the mars photos setInterval display
+        clearInterval(marsIntervalID);
 
-        setTimeout(function() {
-            aliceSpeak(lessonMessage3);
-        }, 1000 * 28);
+        // set the page-container background opacity to 0
+        $(".page-container").css("background-image", "none");
+
+        // restore the original background color
+        $("body").css("background-color", "#d2d2d2");
+
+        // recreate the original page setup
+
     }
 
     $("#search-button").on("click", function(event) {
