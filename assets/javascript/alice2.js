@@ -255,6 +255,39 @@ $(document).ready(function() {
         aliceLesson();
     });
 
+    //Until someone clicks on the post-lesson button, hide the search form.
     $("#postAlice").hide();
 
+    $("#afterLesson").on("click", function () {
+        
+        var helloAgain = 'hello again. What would you like to learn more about?';
+
+        aliceSpeak(helloAgain);
+        
+        $("#postAlice").show();
+
+        //Now that someone has clicked to launch Alice after the lesson, we want the wiki search to come up.
+        $("#postAlice-btn").on("click", function () {
+        
+            var searchTerm = $("#searchTerm").val().trim();
+            
+            var queryURL = "https://en.wikipedia.org/w/api.php?action=opensearch&search=" + searchTerm + "&origin=*&prop=info&rvprop=content&format=json&formatversion=2";
+          
+            $.ajax ( {
+                url: queryURL,
+                method: "GET"
+            }).then(function(response) {
+                console.log(response);
+        
+                var searchResult = response[2]["0"];
+                
+                setTimeout( function() {
+                    aliceSpeak(searchResult);
+                }, 1000 * 2);
+                
+                console.log(searchResult);
+            })
+        })
+    })
+    
 });
