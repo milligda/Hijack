@@ -29,8 +29,6 @@ $(document).ready(function() {
     });
 
     function aliceStarts() {
-        
-       
 
         // alice starts by transitioning the background color to a shade of black
         setTimeout( function() {
@@ -47,7 +45,7 @@ $(document).ready(function() {
              //displays alice-speech container
             $("#alice-speech").css("opacity","1");
 
-        }, 1000 * 9.5);
+        }, 1000 * 8.5);
 
         // start alice's introduction after a set amount of time
         setTimeout(aliceIntroduction, 1000 * 10);
@@ -62,12 +60,12 @@ $(document).ready(function() {
         // display the name-input field after the user has a chance to read the introduction message
         setTimeout(function() {
             $("#name-input").fadeTo(750, 1)
-        }, 1000 * 3);
+        }, 1000 * 6);
         
         // display the name-button after the input field has loaded - next step will be triggered when the name button is clicked
         setTimeout(function() {
             $("#name-button").fadeTo(750, 1);
-        }, 1000 * 4);
+        }, 1000 * 7);
     }
 
     // function called to have alice speak the message that is passed in as a parameter
