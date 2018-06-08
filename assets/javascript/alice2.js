@@ -10,6 +10,11 @@ $(document).ready(function() {
              loop: false
         });
 
+    // loads the voices on page load so that the correct voice can be used when called
+    speechSynthesis.onvoiceschanged = function() {
+        voices = speechSynthesis.getVoices();
+    };
+
     $("#start-alice-button").on("click", function() {
 
         // clear everything on the page
@@ -48,12 +53,12 @@ $(document).ready(function() {
         // display the name-input field after the user has a chance to read the introduction message
         setTimeout(function() {
             $("#name-input").fadeTo(750, 1)
-        }, 1000);
+        }, 1000 * 3);
         
         // display the name-button after the input field has loaded - next step will be triggered when the name button is clicked
         setTimeout(function() {
             $("#name-button").fadeTo(750, 1);
-        }, 1000 * 2);
+        }, 1000 * 4);
     }
 
     // function called to have alice speak the message that is passed in as a parameter
