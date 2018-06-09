@@ -462,13 +462,8 @@ $(document).ready(function() {
         color2.rgb = "rgb(" + color2.r + ","+ color2.g +"," + color2.b + ")";
         console.log(color1.rgb);
         console.log(color2.rgb);
-        // making the body bg the color
-        // $("body").css("background", "linear-gradient(at top left, rgb(" + color1 + "," + color1 + "," + color1 + "), rgb (" + color2 + "," + color2 + "," + color2 + ")" );
 
-        // $(".page-container").css("background", "linear-gradient(at top left, " + color1.rgb + "," + color2.rgb);
-
-        // $(".page-container").css("background-color", "linear-gradient( " + color1.rgb + "," + color2.rgb + ")" );
-
+        //make the BG fade in and out 
         $("body").animate({
             backgroundColor: "linear-gradient( " + color1.rgb + "," + color2.rgb + ")",
         }, bgAnimationLength);
