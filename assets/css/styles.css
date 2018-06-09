@@ -1,8 +1,11 @@
-body {
-    background-color: #d2d2d2;
-    color: #000000;
-}
 
+body {
+    margin: 0;
+    padding: 0;
+    font-family: 'Dancing Script', cursive;
+    background-color: #5ce1f4;
+    color: #ffffff;
+}
 .page-container {
     background-position: center, center;
     background-size: cover;
@@ -65,13 +68,6 @@ body {
     opacity: 0;
 }
 
-body {
-    margin: 0;
-    padding: 0;
-    font-family: 'Dancing Script', cursive;
-    background-color: #5ce1f4;
-    color: #ffffff;
-}
 
 header {
     padding-top: 25px;

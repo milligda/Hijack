@@ -150,7 +150,8 @@ $(document).ready(function() {
         // start 14 seconds after function has been called.  
         // change the background and have alice speak her welcomeMessage
         setTimeout( function() {
-
+            //remove cursor
+            $("#alice-speech").css("opacity", "0");
             // change the background color
             $("body").animate({
                 backgroundColor: "#555555",
