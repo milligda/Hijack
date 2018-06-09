@@ -52,13 +52,12 @@ $(document).ready(function() {
 
         // change the background to the blue error screen
         $("body").css('background-color', '#2067B2');
-
         
         // start alice
-        aliceStarts();
+        aliceAppears();
     });
 
-    function aliceStarts() {
+    function aliceAppears() {
 
         // alice starts by transitioning the background color to a shade of black
         setTimeout( function() {
@@ -278,6 +277,8 @@ $(document).ready(function() {
             opacity: 1, 
         }, 1000 * 3);
 
+        playSong();
+
         // display the initial image of mars
         setTimeout(displayMarsPhotos, 1000 * 1);
 
@@ -300,6 +301,17 @@ $(document).ready(function() {
         setTimeout(function() {
             endHijack() 
         }, 1000 * 32);
+    }
+
+    function playSong() {
+        
+        // create the audio element for the song, set the source file, set the volume
+        audioElement = document.createElement("audio");
+        audioElement.setAttribute("src", "assets/music/lesson-music.mp3");
+        audioElement.volume = 0.3;
+        
+        // play the song the first time
+        audioElement.play();
     }
 
     function displayMarsPhotos () {
