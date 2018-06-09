@@ -385,7 +385,7 @@ $(document).ready(function() {
         $("body").animate({
             backgroundColor: "#555555",
         }, bgAnimationLength);
-        
+
         // Alice says the helloAgain message.
         var helloAgain = 'hello again. What would you like to learn more about?';
 
@@ -400,6 +400,10 @@ $(document).ready(function() {
         // Now that someone has clicked to launch Alice after the lesson, we want the wiki search to come up.
         $("#postAlice-btn").on("click", function () {
 
+            // call the function to get the background to start changing;
+            bgGradient();
+
+            // take the input and complete the search from Wiki API.
             var searchTerm = $("#searchTerm").val().trim();
             
             var queryURL = "https://en.wikipedia.org/w/api.php?action=opensearch&search=" + searchTerm + "&origin=*&prop=info&rvprop=content&format=json&formatversion=2";
@@ -409,14 +413,14 @@ $(document).ready(function() {
                 method: "GET"
             }).then(function(response) {
                 console.log(response);
-        
+
                 var searchResult = response[2]["0"];
 
                 // alice speaks the search result information.
                 aliceSpeak(searchResult);
-                
+
                 var afterSearch = 'I hope that was helpful. Would you like to learn about something else?';
-                
+
                 // alice speaks the after search message, prompting the user for next step.
                 aliceSpeak(afterSearch);
 
@@ -434,6 +438,40 @@ $(document).ready(function() {
             $("#postAlice").hide();
             endHijack();
         });
-    })
+    });
+
+    // Function to make the background a rolling change of gradient
+    function bgGradient () {
+
+        // set 2 colors to be chosen randomly. Their RGB values are chosen randomly using math.random
+        
+        var color1 = {
+            r: Math.floor(Math.random()*255 *0.3), 
+            g: Math.floor(Math.random()*255 *0.59), 
+            b: Math.floor(Math.random()*255 *0.11), 
+        };
+
+        var color2 = {
+            r: Math.floor(Math.random()*255 *0.3), 
+            g: Math.floor(Math.random()*255 *0.59), 
+            b: Math.floor(Math.random()*255 *0.11), 
+        };
+
+        // putting together each of the randomly generated rgb values and making it one color.
+        color1.rgb = "rgb(" + color1.r + ","+ color1.g +"," + color1.b + ")";
+        color2.rgb = "rgb(" + color2.r + ","+ color2.g +"," + color2.b + ")";
+        console.log(color1.rgb);
+        console.log(color2.rgb);
+        // making the body bg the color
+        // $("body").css("background", "linear-gradient(at top left, rgb(" + color1 + "," + color1 + "," + color1 + "), rgb (" + color2 + "," + color2 + "," + color2 + ")" );
+
+        // $(".page-container").css("background", "linear-gradient(at top left, " + color1.rgb + "," + color2.rgb);
+
+        // $(".page-container").css("background-color", "linear-gradient( " + color1.rgb + "," + color2.rgb + ")" );
+
+        $("body").animate({
+            backgroundColor: "linear-gradient( " + color1.rgb + "," + color2.rgb + ")",
+        }, bgAnimationLength);
+    };
     
 });
