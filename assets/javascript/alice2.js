@@ -112,18 +112,21 @@ $(document).ready(function() {
         userNameLength = userName.length; 
         console.log(userNameLength);
 
+        // empty the name-input field
+        $("#name-input").val("");
+
         // if the user name is longer than 40 characters, display an error message
         if (userNameLength > 40) {
-
-            $("#name-input").val("");
             
             typewriter.deleteAll().typeString("that is a very long name. maybe you should try again.").start();
 
-        // if the user name is valid, proceed with the hijack
-        } else {
+        // if the user name includes unusual special characters, display an error message
+        } else if (/^[a-zA-Z0-9 , _]*$/.test(userName) == false) {
 
-            // empty the name-input field
-            $("#name-input").val("");
+            typewriter.deleteAll().typeString("you have entered some invalid characters. please try again.").start();
+
+        // otherwise - if the user name is valid, proceed with the hijack
+        } else {
 
             // hide the name-input field and name-button
             $("#name-input").fadeOut(750);
@@ -227,11 +230,35 @@ $(document).ready(function() {
 
         event.preventDefault();
 
-        // store the searchTerm
+        // store the searchTerm and determine the length of the string
         searchTerm = $("#search-input").val().trim();
+        searchTermLength = searchTerm.length; 
 
         // empty the search-input field
         $("#search-input").val("");
+
+        // if the search term is longer than 64 characters, say an message
+        if (searchTermLength > 64) {
+            
+            var searchLongErrorMessage = "that seems very long. you should try again";
+
+            aliceSpeak(searchLongErrorMessage);
+
+        // if the search term includes unusual special characters, say an error message
+        } else if (/^[a-zA-Z0-9 , _]*$/.test(searchTerm) == false) {
+
+            var searchCharErrorMessage = "you have included invalid special characters. try again";
+
+            aliceSpeak(searchCharErrorMessage);
+
+        // otherwise - proceed with the hijack and present the search results
+        } else {
+
+            displayHijackSearch();
+        }
+    });
+
+    function displayHijackSearch() {
 
         // hide the search-input field and search-button
         $("#search-input").fadeTo(750, 0);
@@ -252,10 +279,11 @@ $(document).ready(function() {
         setTimeout(aliceSpeak(hijackResultsMessage), 1000 * 10);
 
         // display yes / no buttons after alice speaks the hijackResultsMessage
+
+
         // clicking yes will empty the image carousel container and call the hijackSearchDisplay function
         // clicking no will call result in alice saying "my turn" and then calling the aliceLesson function
-
-    });
+    }
 
     // function that runs alice's lesson
     function aliceLesson() {
