@@ -417,9 +417,13 @@ $(document).ready(function() {
 
     // On Post Alice button click...
     $("#afterLesson").on("click", function () {
-        
+
         // Enter back into the Alice screen
         $("#test-container").empty();
+        $("header").empty();
+        $(".gif-container").empty();
+
+        $("#postAlice").show();
 
         // Fade into experience again.
         // Make background gray and fade in the text and search box
@@ -443,6 +447,7 @@ $(document).ready(function() {
 
             // call the function to get the background to start changing;
             bgGradient();
+            desaturate();
 
             // take the input and complete the search from Wiki API.
             var searchTerm = $("#searchTerm").val().trim();
@@ -509,5 +514,15 @@ $(document).ready(function() {
             backgroundColor: "linear-gradient( " + color1.rgb + "," + color2.rgb + ")",
         }, bgAnimationLength);
     };
+
+    function desaturate(r, g, b) {
+        var intensity = 0.3 * r + 0.59 * g + 0.11 * b;
+        var k = 1;
+        r = Math.floor(intensity * k + r * (1 - k));
+        g = Math.floor(intensity * k + g * (1 - k));
+        b = Math.floor(intensity * k + b * (1 - k));
+        return [r, g, b];
+        console.log(r, g, b);
+    }
     
 });
