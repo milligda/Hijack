@@ -29,56 +29,6 @@ $(document).ready(function() {
         }
     }
 
-//function to add gifs from the different gif arrays
-  
-    // function displayGifs0(event) {
-
-    //         for (var i = 0; i < gifs0.length; i++) {
-
-    //             var gifImage = $("<img>");
-    //             gifImage.addClass("rounded float-left");
-    //             gifImage.appendTo(".gifs-container");
-    //             gifImage.attr('src', gifs0[i]);
-                
-    //         }        
-    //     };
-    
-    // function displayGifs1(event) {
-
-    //     for (var i = 0; i < gifs0.length; i++) {
-
-    //         var gifImage = $("<img>");
-    //         gifImage.addClass("rounded float-left");
-    //         gifImage.appendTo(".gifs-container");
-    //         gifImage.attr('src', gifs1[i]);
-            
-    //     }        
-    // };
-    
-    // function displayGifs2(event) {
-
-    //     for (var i = 0; i < gifs0.length; i++) {
-
-    //         var gifImage = $("<img>");
-    //         gifImage.addClass("rounded float-left");
-    //         gifImage.appendTo(".gifs-container");
-    //         gifImage.attr('src', gifs2[i]);
-            
-    //     }        
-    // };
-    
-    // function displayGifs3(event) {
-
-    //     for (var i = 0; i < gifs0.length; i++) {
-
-    //         var gifImage = $("<img>");
-    //         gifImage.addClass("rounded float-left");
-    //         gifImage.appendTo(".gifs-container");
-    //         gifImage.attr('src', gifs3[i]);
-            
-    //     }        
-    // };
-
     // event listener for when the user clicks a quote button
     $(document).on("click", ".quoteButton", function() {
         
@@ -93,26 +43,8 @@ $(document).ready(function() {
             gifImage.attr('src', (gifSet[gifSetNumber])[i]);
             
         }        
-        //displayGifs0();
+
     });
-
-    // $(document).on("click", "#1", function() {
-        
-    //     $(".gifs-container").empty();
-    //     displayGifs1();
-    // });
-
-    // $(document).on("click", "#2", function() {
-        
-    //     $(".gifs-container").empty();
-    //     displayGifs2();
-    // });
-    
-    // $(document).on("click", "#3", function() {
-        
-    //     $(".gifs-container").empty();
-    //     displayGifs3();
-    // });
 
     // populate the initial buttons on the page when the page loads
     displayQuoteButtons();
