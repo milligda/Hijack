@@ -34,8 +34,7 @@ $(document).ready(function() {
         for (var i = 0; i < gifSet[gifSetNumber].length; i++) {
 
             var gifImage = $("<img>");
-            gifImage.addClass("rounded float-left");
-            gifImage.attr("id","gifButton");
+            gifImage.addClass("rounded float-left gifButton");
             gifImage.appendTo(".gifs-container");
             gifImage.attr('src', (gifSet[gifSetNumber])[i]);
             
