@@ -20,13 +20,6 @@ $(document).ready(function() {
     var gifs3 = ["https://media.giphy.com/media/BAYZwXqJ3zQnC/giphy.gif","https://media.giphy.com/media/4BgQaxfQfeqys/giphy.gif", "https://media.giphy.com/media/EZELNssmfIzni/giphy.gif","https://media.giphy.com/media/C67ihtpViTICk/giphy.gif"];
     var count = 0;
     var gifSet = [gifs0, gifs1, gifs2, gifs3];
-
-    var carousel = $(".alice-carousel").flickity({
-        freeScroll: true,
-        wrapAround: true,
-        autoPlay: 1500,
-        imagesLoaded: true
-    });
     
     var flickrURL = 'https://api.flickr.com/services/rest/?';
     var flickrMethod = 'flickr.photos.search';
@@ -70,6 +63,13 @@ $(document).ready(function() {
     }
 
     function getFlickrImages(searchInput) {
+
+        var carousel = $(".alice-carousel").flickity({
+            freeScroll: true,
+            wrapAround: true,
+            autoPlay: 1500,
+            imagesLoaded: true
+        });
 
         var queryURL = flickrURL + 
             "method=" + flickrMethod + 
@@ -342,13 +342,13 @@ $(document).ready(function() {
         // display the images that were pulled from Flickr
         setTimeout( function() {
 
-            $(".alice-carousel").fadeTo(750, 1);
+            $(".alice-carousel").fadeIn(750);
 
-        }, 1000 * 5);
+        }, 1000 * 8);
         
 
         // alice speaks the results message XX seconds after the HijackSearchMessage
-        setTimeout(aliceSpeak(hijackResultsMessage), 1000 * 6);
+        setTimeout(aliceSpeak(hijackResultsMessage), 1000 * 9);
 
         // display yes / no buttons after alice speaks the hijackResultsMessage
 
@@ -455,6 +455,8 @@ $(document).ready(function() {
 
         // recreate the original page setup
         displayQuoteButtons();
+
+        $("#afterLesson").fadeTo(750, 1);
     }
 
        // displays the buttons on the page
