@@ -11,6 +11,7 @@ $(document).ready(function() {
     var typewriter = new Typewriter(typeText, {
              loop: false
         });
+        
     var quotes = ["We're all mad down here", "I'm late, I'm late! For a very important date!", "Off with their heads!", "Why is a raven like a writing desk?"];
     var gifs0 = ["https://media.giphy.com/media/4uGeJzUSCKKeQ/giphy.gif", "https://media.giphy.com/media/UZOEGrs3w3tao/giphy.gif", "https://media.giphy.com/media/EZELNssmfIzni/giphy.gif", "https://media.giphy.com/media/xIJLgO6rizUJi/giphy.gif"]
     var gifs1 = ["https://media.giphy.com/media/SUHaymtGhrASA/giphy.gif","https://media.giphy.com/media/oxIsjfvGh3GCI/giphy.gif", "https://media.giphy.com/media/136ZNSzsbthZM4/giphy.gif","https://media.giphy.com/media/ATmBdBQGgLXSU/giphy.gif"]
@@ -426,8 +427,7 @@ $(document).ready(function() {
         for (var i = 0; i < gifSet[gifSetNumber].length; i++) {
 
             var gifImage = $("<img>");
-            gifImage.addClass("rounded float-left");
-            gifImage.attr("id","gifButton");
+            gifImage.addClass("rounded float-left gifButton");
             gifImage.appendTo(".gifs-container");
             gifImage.attr('src', (gifSet[gifSetNumber])[i]);
             
@@ -558,5 +558,8 @@ $(document).ready(function() {
         setInterval(aliceBG, 1500)
 
     };
+
+    // populate the initial buttons on the page when the page loads
+    displayQuoteButtons();
     
 });

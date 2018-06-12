@@ -17,7 +17,6 @@ body {
 
 .alice-output {
     max-width: 400px;
-    padding-top: 200px;
     margin: auto;
     text-align: center;
 }
@@ -29,7 +28,7 @@ body {
     text-align: center;
 }
 
-.alice-input, #searchTerm {
+.alice-input {
     border-radius: 10px;
     border: none;
     box-shadow: 0px 0px 20px #ffffff;
@@ -39,7 +38,7 @@ body {
     color: #c2c2c2;
 }
 
-.alice-button, #postAlice-btn {
+.alice-button {
     border-radius: 25px;
     border: none;
     display: block;
@@ -60,14 +59,13 @@ body {
     outline: none;
 }
 
-#name-input, #name-button, #search-input, #search-button {
+#name-input, #name-button, #search-input, #search-button, #searchTerm, #postAlice-btn {
     display: none;
 }
 
 #alice-speech {
     opacity: 0;
 }
-
 
 .jumbotron-fluid {
     padding-top: 25px;
@@ -96,16 +94,14 @@ h1 {
     font-size: 20px;
 }
 
-
-
-
-.rounded.float-left {
+.gifButton {
     height: 245px;
     width: 25%;
     max-width: 200px;
     border: 10px solid;
     border-color: white;
     margin: 10px;
+    cursor: pointer;
 }
 
 #postAlice {
