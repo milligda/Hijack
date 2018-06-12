@@ -17,15 +17,12 @@ $(document).ready(function() {
 
             // add the class and ID's to the buttons
             button.addClass('btn btn-light quoteButton');
-            button.attr('id', count);
             button.attr('value', i);
             // set the text for the button
             button.text(quotes[i]);
 
             // add the button to the correct container on the page
             button.appendTo(".jumbotron-fluid");
-            //increase the count for the ID's
-            count++;
         }
     }
 
