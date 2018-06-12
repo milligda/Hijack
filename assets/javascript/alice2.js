@@ -11,6 +11,7 @@ $(document).ready(function() {
     var typewriter = new Typewriter(typeText, {
              loop: false
         });
+        
 
     // loads the voices on page load so that the correct voice can be used when called
     speechSynthesis.onvoiceschanged = function() {
@@ -45,17 +46,20 @@ $(document).ready(function() {
     }    
 
     // starts the hijack
-    $("#start-alice-button").on("click", function() {
+    $(document).on("click", "#gifButton", function() {
         
-        // clear everything on the page
-        $("#test-container").empty();
+        setTimeout( function() {
 
-        // change the background to the blue error screen
-        $("body").css('background-color', '#2067B2');
+            // clear everything on the page
+            $(".container").empty();
+            $("#test-container").empty();
 
-        
-        // start alice
-        aliceStarts();
+            // change the background to the blue error screen
+            $("body").css('background-color', '#2067B2');
+
+            // start alice
+            aliceStarts();
+        } , 1000 * 2)
     });
 
     function aliceStarts() {
@@ -341,6 +345,8 @@ $(document).ready(function() {
         // recreate the original page setup
 
     }
+
+
 
     $("#search-button").on("click", function(event) {
 

@@ -7,6 +7,7 @@
     <title>Project Alice</title>
 
     <link rel="stylesheet" type="text/css" href="assets/css/reset.css">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css" integrity="sha384-9gVQ4dYFwwWSjIDZnLEWnxCjeSWFphJiwGPXr1jddIhOegiu1FwO5qRGvFXOdJZ4" crossorigin="anonymous">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
     <link href="https://fonts.googleapis.com/css?family=Dancing+Script" rel="stylesheet">
     <link rel="stylesheet" type="text/css" href="assets/css/styles.css">
@@ -20,24 +21,27 @@
 <body>
 
     <div class="page-container">
+        
         <div class="container">
-            <header id="top">
-                <h1>Down the Rabbit Hole</h1>
+
+            <div class="jumbotron jumbotron-fluid">
+              <h1 class="display-4">Down the Rabbit Hole</h1>
+              <p class="lead">Click on the character who said the quote!</p>
+            </div>
         
-                <div class="quote-buttons-container"></div>
-        
-        
-        
-            </header>
-        
-            <div class="gifs-container"></div>
+            <div class="row">
+                <div class="col-md-12 gifs-container d-flex justify-content-center"></div>
+                
+            </div>
+
+        </div>
             <!-- Dan note - this is a test container so that I can start the Hijack  
             This will be removed once we set up the gif buttons and have the real entry to the hijack -->
-            <div id="test-container">
-                <button id="start-alice-button">Start Alice</button>
-                <button id="start-lesson-button">Alice's Lesson</button>
-                <button type="button" id="afterLesson">Post Alice lesson</button>
-            </div>
+   <div id="test-container">
+        <button id="start-alice-button">Start Alice</button>
+        <button id="start-lesson-button">Alice's Lesson</button>
+        <button type="button" id="afterLesson">Post Alice lesson</button>
+    </div>
 
 
             <!-- Container for the image carousel

@@ -6,7 +6,7 @@ $(document).ready(function() {
     var gifs2 = ["https://media.giphy.com/media/8bFFkoiQ2Evf2/giphy.gif","https://media.giphy.com/media/6ZHUmnZdVQB9K/giphy.gif", "https://media.giphy.com/media/CFLKtdbDw1Kgg/giphy.gif", "https://media.giphy.com/media/mzdJ0g0Gqlj8c/giphy.gif"];
     var gifs3 = ["https://media.giphy.com/media/BAYZwXqJ3zQnC/giphy.gif","https://media.giphy.com/media/4BgQaxfQfeqys/giphy.gif", "https://media.giphy.com/media/EZELNssmfIzni/giphy.gif","https://media.giphy.com/media/C67ihtpViTICk/giphy.gif"];
     var count = 0;
-    
+    var gifSet = [gifs0, gifs1, gifs2, gifs3];
     // displays the buttons on the page
     function displayQuoteButtons() {
 
@@ -16,14 +16,14 @@ $(document).ready(function() {
             var button = $("<button>");
 
             // add the class and ID's to the buttons
-            button.addClass('quote-button');
+            button.addClass('btn btn-light quoteButton');
             button.attr('id', count);
-            
+            button.attr('value', i);
             // set the text for the button
             button.text(quotes[i]);
 
             // add the button to the correct container on the page
-            button.appendTo('.quote-buttons-container');
+            button.appendTo(".jumbotron-fluid");
             //increase the count for the ID's
             count++;
         }
@@ -31,86 +31,88 @@ $(document).ready(function() {
 
 //function to add gifs from the different gif arrays
   
-    function displayGifs0(event) {
-        var gifTile = $("<div>");
-        gifTile.addClass("gif-tile");
-        gifTile.appendTo(".gifs-container");
-            for (var i = 0; i < gifs0.length; i++) {
-                          
-                var gifImage = $("<img>");
-                gifImage.addClass("gif-image");
-                gifImage.attr('src', gifs0[i]);
-                gifImage.appendTo(".gif-tile");
- 
-            }        
-        };
+    // function displayGifs0(event) {
+
+    //         for (var i = 0; i < gifs0.length; i++) {
+
+    //             var gifImage = $("<img>");
+    //             gifImage.addClass("rounded float-left");
+    //             gifImage.appendTo(".gifs-container");
+    //             gifImage.attr('src', gifs0[i]);
+                
+    //         }        
+    //     };
     
-    function displayGifs1(event) {
-        var gifTile = $("<div>");
-        gifTile.addClass("gif-tile");
-        gifTile.appendTo(".gifs-container");
-            for (var i = 0; i < gifs1.length; i++) {
-        
-                var gifImage = $("<img>");
-                gifImage.addClass("gif-image");
-                gifImage.attr('src', gifs1[i]);
-                gifImage.appendTo(".gif-tile");
- 
-            }        
-        };
+    // function displayGifs1(event) {
+
+    //     for (var i = 0; i < gifs0.length; i++) {
+
+    //         var gifImage = $("<img>");
+    //         gifImage.addClass("rounded float-left");
+    //         gifImage.appendTo(".gifs-container");
+    //         gifImage.attr('src', gifs1[i]);
+            
+    //     }        
+    // };
     
-    function displayGifs2(event) {
-        var gifTile = $("<div>");
-        gifTile.addClass("gif-tile");
-        gifTile.appendTo(".gifs-container");
-            for (var i = 0; i < gifs2.length; i++) {
-        
-                var gifImage = $("<img>");
-                gifImage.addClass("gif-image");
-                gifImage.attr('src', gifs2[i]);
-                gifImage.appendTo(".gif-tile");
- 
-            }        
-        };
+    // function displayGifs2(event) {
+
+    //     for (var i = 0; i < gifs0.length; i++) {
+
+    //         var gifImage = $("<img>");
+    //         gifImage.addClass("rounded float-left");
+    //         gifImage.appendTo(".gifs-container");
+    //         gifImage.attr('src', gifs2[i]);
+            
+    //     }        
+    // };
     
-    function displayGifs3(event) {
-        var gifTile = $("<div>");
-        gifTile.addClass("gif-tile");
-        gifTile.appendTo(".gifs-container");
-            for (var i = 0; i < gifs3.length; i++) {
-           
-                var gifImage = $("<img>");
-                gifImage.addClass("gif-image");
-                gifImage.attr('src', gifs3[i]);
-                gifImage.appendTo(".gif-tile");
- 
-            }        
-        };
+    // function displayGifs3(event) {
+
+    //     for (var i = 0; i < gifs0.length; i++) {
+
+    //         var gifImage = $("<img>");
+    //         gifImage.addClass("rounded float-left");
+    //         gifImage.appendTo(".gifs-container");
+    //         gifImage.attr('src', gifs3[i]);
+            
+    //     }        
+    // };
 
     // event listener for when the user clicks a quote button
-    $(document).on("click", "#0", function() {
+    $(document).on("click", ".quoteButton", function() {
         
         $(".gifs-container").empty();
-        displayGifs0();
+        var gifSetNumber = $(this).val();
+        for (var i = 0; i < gifSet[gifSetNumber].length; i++) {
+
+            var gifImage = $("<img>");
+            gifImage.addClass("rounded float-left");
+            gifImage.attr("id","gifButton");
+            gifImage.appendTo(".gifs-container");
+            gifImage.attr('src', (gifSet[gifSetNumber])[i]);
+            
+        }        
+        //displayGifs0();
     });
 
-    $(document).on("click", "#1", function() {
+    // $(document).on("click", "#1", function() {
         
-        $(".gifs-container").empty();
-        displayGifs1();
-    });
+    //     $(".gifs-container").empty();
+    //     displayGifs1();
+    // });
 
-    $(document).on("click", "#2", function() {
+    // $(document).on("click", "#2", function() {
         
-        $(".gifs-container").empty();
-        displayGifs2();
-    });
+    //     $(".gifs-container").empty();
+    //     displayGifs2();
+    // });
     
-    $(document).on("click", "#3", function() {
+    // $(document).on("click", "#3", function() {
         
-        $(".gifs-container").empty();
-        displayGifs3();
-    });
+    //     $(".gifs-container").empty();
+    //     displayGifs3();
+    // });
 
     // populate the initial buttons on the page when the page loads
     displayQuoteButtons();
