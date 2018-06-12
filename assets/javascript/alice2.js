@@ -64,6 +64,8 @@ $(document).ready(function() {
         
         // start alice
         aliceAppears();
+        
+        });
 
     });
 
@@ -525,8 +527,8 @@ $(document).ready(function() {
                 aliceSpeak(afterSearch);
 
                 console.log(searchResult);
-            })
-        })
+            });
+        });
         //Create an 'Exit' button while in postLesson Alice.
         var exit = $("<button>").addClass("exit").text("Exit");
         $("#postAlice").append(exit);
@@ -555,7 +557,7 @@ $(document).ready(function() {
             backgroundColor: color1Rgb,
         }, 2000);
         
-        setInterval(aliceBG, 1500)
+        setInterval(aliceBG, 1500);
 
     };
 
