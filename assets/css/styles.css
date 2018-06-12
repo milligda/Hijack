@@ -69,7 +69,7 @@ body {
 }
 
 
-header {
+.jumbotron-fluid {
     padding-top: 25px;
     padding-bottom: 25px;
     background-color: #b4f2ff;
@@ -83,14 +83,10 @@ h1 {
     font-weight: bold;
 }
 
-.quote-buttons-container {
-    margin: 10px 20px;
-}
-
-.quote-button {
-    border: none;
+.btn-light {
+    /* border: none;
     background-color: #ffffff;
-    border-radius: 25px;
+    border-radius: 25px; */
     padding: 15px 20px;
     color: #5ce1f4;
     font-weight: bold;
@@ -101,35 +97,15 @@ h1 {
 }
 
 
-.gifs-container {
-    max-width: 1000px;
-    margin: 0 auto;
-    display: grid;
-    padding: 20px 0px 80px 0px;
-    justify-content: space-between;
-}
 
 
-.gif-tile {
-    border-radius: 5px;
-    padding: 20px;
-    background-color: #ffffff;
-    color: #333333;
-    margin: auto;
-    align-items: stretch;
-    width: 100%;
-    
-    /* width: fit-content; */
-
-}
-
-.gif-image {
-    clear: both;
-    box-sizing: border-box;
+.rounded.float-left {
     height: 245px;
     width: 25%;
-    margin: 10px;
     max-width: 200px;
+    border: 10px solid;
+    border-color: white;
+    margin: 10px;
 }
 
 #postAlice {

@@ -11,6 +11,14 @@ $(document).ready(function() {
     var typewriter = new Typewriter(typeText, {
              loop: false
         });
+    var quotes = ["We're all mad down here", "I'm late, I'm late! For a very important date!", "Off with their heads!", "Why is a raven like a writing desk?"];
+    var gifs0 = ["https://media.giphy.com/media/4uGeJzUSCKKeQ/giphy.gif", "https://media.giphy.com/media/UZOEGrs3w3tao/giphy.gif", "https://media.giphy.com/media/EZELNssmfIzni/giphy.gif", "https://media.giphy.com/media/xIJLgO6rizUJi/giphy.gif"]
+    var gifs1 = ["https://media.giphy.com/media/SUHaymtGhrASA/giphy.gif","https://media.giphy.com/media/oxIsjfvGh3GCI/giphy.gif", "https://media.giphy.com/media/136ZNSzsbthZM4/giphy.gif","https://media.giphy.com/media/ATmBdBQGgLXSU/giphy.gif"]
+    var gifs2 = ["https://media.giphy.com/media/8bFFkoiQ2Evf2/giphy.gif","https://media.giphy.com/media/6ZHUmnZdVQB9K/giphy.gif", "https://media.giphy.com/media/CFLKtdbDw1Kgg/giphy.gif", "https://media.giphy.com/media/mzdJ0g0Gqlj8c/giphy.gif"];
+    var gifs3 = ["https://media.giphy.com/media/BAYZwXqJ3zQnC/giphy.gif","https://media.giphy.com/media/4BgQaxfQfeqys/giphy.gif", "https://media.giphy.com/media/EZELNssmfIzni/giphy.gif","https://media.giphy.com/media/C67ihtpViTICk/giphy.gif"];
+    var count = 0;
+    var gifSet = [gifs0, gifs1, gifs2, gifs3];
+        
 
     // loads the voices on page load so that the correct voice can be used when called
     speechSynthesis.onvoiceschanged = function() {
@@ -45,16 +53,17 @@ $(document).ready(function() {
     }    
 
     // starts the hijack
-    $("#start-alice-button").on("click", function() {
+    $(document).on("click", "#gifButton", function() {
         
-        // clear everything on the page
-        $("#test-container").empty();
+        setTimeout( function() {
+
 
         // change the background to the blue error screen
         $("body").css('background-color', '#2067B2');
         
         // start alice
         aliceAppears();
+
     });
 
     function aliceAppears() {
@@ -71,6 +80,8 @@ $(document).ready(function() {
 
         setTimeout( function() {
 
+            //sets new font
+            $("body").css({"font-family":"VT323, monospace","font-size":"25px"});
              //displays alice-speech container
             $("#alice-speech").css("opacity","1");
 
@@ -287,7 +298,8 @@ $(document).ready(function() {
 
     // function that runs alice's lesson
     function aliceLesson() {
-
+        //removes beginning page
+        $(".container").css("opacity","0");
         // part 1 of alice's lesson - takes 6 seconds
         var lessonMessage1 = "this is mars. at its closest it is 34.8 million miles away.";
 
@@ -343,7 +355,8 @@ $(document).ready(function() {
     }
 
     function displayMarsPhotos () {
-        
+        //removes beginning page
+        $(".container").css("opacity","0");
         // display the background images as a slideshow that fades in and out. 
         marsIntervalID = setInterval(function() {
 
@@ -379,8 +392,49 @@ $(document).ready(function() {
         $("body").css("background-color", "#d2d2d2");
 
         // recreate the original page setup
-
+        displayQuoteButtons();
     }
+
+       // displays the buttons on the page
+    function displayQuoteButtons() {
+        
+        $(".container").css("opacity", "1");
+
+        for (var i = 0; i < quotes.length; i++) {
+            
+            // create the button element
+            var button = $("<button>");
+
+            // add the class and ID's to the buttons
+            button.addClass('btn btn-light quoteButton');
+            button.attr('value', i);
+            // set the text for the button
+            button.text(quotes[i]);
+
+            // add the button to the correct container on the page
+            button.appendTo(".jumbotron-fluid");
+
+        }
+    };
+
+    $("document").on("click", ".quoteButton", function() {
+        //empties previous gifs
+        $(".gifs-container").empty();
+        
+        //runs through gif arrays and appends them to page
+        var gifSetNumber = $(this).val();
+        for (var i = 0; i < gifSet[gifSetNumber].length; i++) {
+
+            var gifImage = $("<img>");
+            gifImage.addClass("rounded float-left");
+            gifImage.attr("id","gifButton");
+            gifImage.appendTo(".gifs-container");
+            gifImage.attr('src', (gifSet[gifSetNumber])[i]);
+            
+        }        
+
+    });
+
 
     $("#search-button").on("click", function(event) {
 
@@ -394,7 +448,7 @@ $(document).ready(function() {
     });
 
     $("#start-lesson-button").on("click", function() {
-
+        //
         // clear the images carousel
 
         // clear the buttons on the page
