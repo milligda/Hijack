@@ -57,19 +57,16 @@ $(document).ready(function() {
         
         setTimeout( function() {
 
-            // clear everything on the page
-            $(".container").empty();
-            $("#test-container").empty();
 
-            // change the background to the blue error screen
-            $("body").css('background-color', '#2067B2');
+        // change the background to the blue error screen
+        $("body").css('background-color', '#2067B2');
+        
+        // start alice
+        aliceAppears();
 
-            // start alice
-            aliceStarts();
-        } , 1000 * 2)
     });
 
-    function aliceStarts() {
+    function aliceAppears() {
 
         // alice starts by transitioning the background color to a shade of black
         setTimeout( function() {
@@ -126,18 +123,21 @@ $(document).ready(function() {
         userNameLength = userName.length; 
         console.log(userNameLength);
 
+        // empty the name-input field
+        $("#name-input").val("");
+
         // if the user name is longer than 40 characters, display an error message
         if (userNameLength > 40) {
-
-            $("#name-input").val("");
             
             typewriter.deleteAll().typeString("that is a very long name. maybe you should try again.").start();
 
-        // if the user name is valid, proceed with the hijack
-        } else {
+        // if the user name includes unusual special characters, display an error message
+        } else if (/^[a-zA-Z0-9 , _]*$/.test(userName) == false) {
 
-            // empty the name-input field
-            $("#name-input").val("");
+            typewriter.deleteAll().typeString("you have entered some invalid characters. please try again.").start();
+
+        // otherwise - if the user name is valid, proceed with the hijack
+        } else {
 
             // hide the name-input field and name-button
             $("#name-input").fadeOut(750);
@@ -241,11 +241,35 @@ $(document).ready(function() {
 
         event.preventDefault();
 
-        // store the searchTerm
+        // store the searchTerm and determine the length of the string
         searchTerm = $("#search-input").val().trim();
+        searchTermLength = searchTerm.length; 
 
         // empty the search-input field
         $("#search-input").val("");
+
+        // if the search term is longer than 64 characters, say an message
+        if (searchTermLength > 64) {
+            
+            var searchLongErrorMessage = "that seems very long. you should try again";
+
+            aliceSpeak(searchLongErrorMessage);
+
+        // if the search term includes unusual special characters, say an error message
+        } else if (/^[a-zA-Z0-9 , _]*$/.test(searchTerm) == false) {
+
+            var searchCharErrorMessage = "you have included invalid special characters. try again";
+
+            aliceSpeak(searchCharErrorMessage);
+
+        // otherwise - proceed with the hijack and present the search results
+        } else {
+
+            displayHijackSearch();
+        }
+    });
+
+    function displayHijackSearch() {
 
         // hide the search-input field and search-button
         $("#search-input").fadeTo(750, 0);
@@ -266,10 +290,11 @@ $(document).ready(function() {
         setTimeout(aliceSpeak(hijackResultsMessage), 1000 * 10);
 
         // display yes / no buttons after alice speaks the hijackResultsMessage
+
+
         // clicking yes will empty the image carousel container and call the hijackSearchDisplay function
         // clicking no will call result in alice saying "my turn" and then calling the aliceLesson function
-
-    });
+    }
 
     // function that runs alice's lesson
     function aliceLesson() {
@@ -291,6 +316,8 @@ $(document).ready(function() {
         $(".page-container").animate({
             opacity: 1, 
         }, 1000 * 3);
+
+        playSong();
 
         // display the initial image of mars
         setTimeout(displayMarsPhotos, 1000 * 1);
@@ -314,6 +341,17 @@ $(document).ready(function() {
         setTimeout(function() {
             endHijack() 
         }, 1000 * 32);
+    }
+
+    function playSong() {
+        
+        // create the audio element for the song, set the source file, set the volume
+        audioElement = document.createElement("audio");
+        audioElement.setAttribute("src", "assets/music/lesson-music.mp3");
+        audioElement.volume = 0.3;
+        
+        // play the song the first time
+        audioElement.play();
     }
 
     function displayMarsPhotos () {
@@ -433,16 +471,20 @@ $(document).ready(function() {
 
     // On Post Alice button click...
     $("#afterLesson").on("click", function () {
-        
+
         // Enter back into the Alice screen
         $("#test-container").empty();
+        $("header").empty();
+        $(".gif-container").empty();
+
+        $("#postAlice").show();
 
         // Fade into experience again.
         // Make background gray and fade in the text and search box
         $("body").animate({
             backgroundColor: "#555555",
         }, bgAnimationLength);
-        
+
         // Alice says the helloAgain message.
         var helloAgain = 'hello again. What would you like to learn more about?';
 
@@ -457,6 +499,11 @@ $(document).ready(function() {
         // Now that someone has clicked to launch Alice after the lesson, we want the wiki search to come up.
         $("#postAlice-btn").on("click", function () {
 
+            // call the function to get the background to start changing;
+            bgGradient();
+            desaturate();
+
+            // take the input and complete the search from Wiki API.
             var searchTerm = $("#searchTerm").val().trim();
             
             var queryURL = "https://en.wikipedia.org/w/api.php?action=opensearch&search=" + searchTerm + "&origin=*&prop=info&rvprop=content&format=json&formatversion=2";
@@ -466,14 +513,14 @@ $(document).ready(function() {
                 method: "GET"
             }).then(function(response) {
                 console.log(response);
-        
+
                 var searchResult = response[2]["0"];
 
                 // alice speaks the search result information.
                 aliceSpeak(searchResult);
-                
+
                 var afterSearch = 'I hope that was helpful. Would you like to learn about something else?';
-                
+
                 // alice speaks the after search message, prompting the user for next step.
                 aliceSpeak(afterSearch);
 
@@ -491,6 +538,45 @@ $(document).ready(function() {
             $("#postAlice").hide();
             endHijack();
         });
-    })
+    });
+
+    // Function to make the background a rolling change of gradient
+    function bgGradient () {
+
+        // set 2 colors to be chosen randomly. Their RGB values are chosen randomly using math.random
+        
+        var color1 = {
+            r: Math.floor(Math.random()*255 *0.3), 
+            g: Math.floor(Math.random()*255 *0.59), 
+            b: Math.floor(Math.random()*255 *0.11), 
+        };
+
+        var color2 = {
+            r: Math.floor(Math.random()*255 *0.3), 
+            g: Math.floor(Math.random()*255 *0.59), 
+            b: Math.floor(Math.random()*255 *0.11), 
+        };
+
+        // putting together each of the randomly generated rgb values and making it one color.
+        color1.rgb = "rgb(" + color1.r + ","+ color1.g +"," + color1.b + ")";
+        color2.rgb = "rgb(" + color2.r + ","+ color2.g +"," + color2.b + ")";
+        console.log(color1.rgb);
+        console.log(color2.rgb);
+
+        //make the BG fade in and out 
+        $("body").animate({
+            backgroundColor: "linear-gradient( " + color1.rgb + "," + color2.rgb + ")",
+        }, bgAnimationLength);
+    };
+
+    function desaturate(r, g, b) {
+        var intensity = 0.3 * r + 0.59 * g + 0.11 * b;
+        var k = 1;
+        r = Math.floor(intensity * k + r * (1 - k));
+        g = Math.floor(intensity * k + g * (1 - k));
+        b = Math.floor(intensity * k + b * (1 - k));
+        return [r, g, b];
+        console.log(r, g, b);
+    }
     
 });
