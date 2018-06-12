@@ -61,10 +61,14 @@ body {
 
 #name-input, #name-button, #search-input, #search-button, #searchTerm, #postAlice-btn {
     display: none;
+    font-family: 'VT323', monospace;
+    font-size: 20px;
 }
 
 #alice-speech {
     opacity: 0;
+    font-family: 'VT323', monospace;
+    font-size: 25px;
 }
 
 .jumbotron-fluid {
@@ -108,3 +112,20 @@ h1 {
     text-align: center;
 }
 
+#afterLesson {
+    display: none;
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+}
+
+.alice-carousel {
+    display: none;
+}
+
+.carousel-cell {
+    width: 500px;
+    height: 300px;
+    margin-right: 10px;
+    background: #333;
+}

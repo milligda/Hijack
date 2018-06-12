@@ -9,7 +9,8 @@ $(document).ready(function() {
     var marsPhotoID = 1;
     var typeText = document.getElementById('alice-speech');
     var typewriter = new Typewriter(typeText, {
-             loop: false
+             loop: false,
+             blinkSpeed: 35,
         });
         
     var quotes = ["We're all mad down here", "I'm late, I'm late! For a very important date!", "Off with their heads!", "Why is a raven like a writing desk?"];
@@ -19,7 +20,22 @@ $(document).ready(function() {
     var gifs3 = ["https://media.giphy.com/media/BAYZwXqJ3zQnC/giphy.gif","https://media.giphy.com/media/4BgQaxfQfeqys/giphy.gif", "https://media.giphy.com/media/EZELNssmfIzni/giphy.gif","https://media.giphy.com/media/C67ihtpViTICk/giphy.gif"];
     var count = 0;
     var gifSet = [gifs0, gifs1, gifs2, gifs3];
-        
+
+    var carousel = $(".alice-carousel").flickity({
+        freeScroll: true,
+        wrapAround: true,
+        autoPlay: 1500,
+        imagesLoaded: true
+    });
+    
+    var flickrURL = 'https://api.flickr.com/services/rest/?';
+    var flickrMethod = 'flickr.photos.search';
+    var flickrAPI = '9211405c4f5ed9a022c7191358a98c98';
+    var flickrSort = 'relevance';
+    var flickrExtras = 'url_m';
+    var flickrImages = 10;
+    var flickrFormat = 'json';
+    var flickrCallback = "nojsoncallback=1";
 
     // loads the voices on page load so that the correct voice can be used when called
     speechSynthesis.onvoiceschanged = function() {
@@ -51,21 +67,57 @@ $(document).ready(function() {
 
         // Queue this utterance.
         window.speechSynthesis.speak(msg);
-    }    
+    }
+
+    function getFlickrImages(searchInput) {
+
+        var queryURL = flickrURL + 
+            "method=" + flickrMethod + 
+            "&api_key=" + flickrAPI + 
+            "&text=" + searchInput + 
+            "&sort=" + flickrSort +
+            "&extras=" + flickrExtras + 
+            "&per_page=" + flickrImages + 
+            "&format=" + flickrFormat + 
+            "&" + flickrCallback;
+
+        console.log(queryURL);
+    
+        $.ajax({
+            url: queryURL,
+            method: "GET",
+        }).then(function(response) {
+        
+            var imagesArr = response.photos.photo;
+        
+            console.log(imagesArr);
+        
+            for (var i = 0; i < imagesArr.length; i++ ) {
+        
+                var carouselCell = $('<div class="carousel-cell">');
+        
+                var carouselImage = $("<img>");
+                carouselImage.attr('src', imagesArr[i].url_m);
+                carouselImage.appendTo(carouselCell);
+                carousel.flickity('append', carouselCell);
+            };
+        });
+    }
 
     // starts the hijack
-    $(document).on("click", "#gifButton", function() {
-        
-        setTimeout( function() {
+    $(document).on("click", ".gifButton", function() {
 
+        // empty the jumbotron page container, remove it's css formatting
+        $(".jumbotron").empty().css("background-color", "transparent").css("border-bottom", "none");
+
+        // empty the gifs-container
+        $(".gifs-container").empty();
 
         // change the background to the blue error screen
         $("body").css('background-color', '#2067B2');
         
         // start alice
         aliceAppears();
-        
-        });
 
     });
 
@@ -83,15 +135,13 @@ $(document).ready(function() {
 
         setTimeout( function() {
 
-            //sets new font
-            $("body").css({"font-family":"VT323, monospace","font-size":"25px"});
              //displays alice-speech container
             $("#alice-speech").css("opacity","1");
 
         }, 1000 * 8.5);
 
         // start alice's introduction after a set amount of time
-        setTimeout(aliceIntroduction, 1000 * 10);
+        setTimeout(aliceIntroduction, 1000 * 12);
     }
 
     function aliceIntroduction() {
@@ -268,6 +318,8 @@ $(document).ready(function() {
         // otherwise - proceed with the hijack and present the search results
         } else {
 
+            getFlickrImages(searchTerm);
+
             displayHijackSearch();
         }
     });
@@ -288,9 +340,15 @@ $(document).ready(function() {
         var hijackResultsMessage = "here are some images of " + searchTerm +". is this the best you can do?"
 
         // display the images that were pulled from Flickr
+        setTimeout( function() {
+
+            $(".alice-carousel").fadeTo(750, 1);
+
+        }, 1000 * 5);
+        
 
         // alice speaks the results message XX seconds after the HijackSearchMessage
-        setTimeout(aliceSpeak(hijackResultsMessage), 1000 * 10);
+        setTimeout(aliceSpeak(hijackResultsMessage), 1000 * 6);
 
         // display yes / no buttons after alice speaks the hijackResultsMessage
 
@@ -301,6 +359,7 @@ $(document).ready(function() {
 
     // function that runs alice's lesson
     function aliceLesson() {
+
         //removes beginning page
         $(".container").css("opacity","0");
         // part 1 of alice's lesson - takes 6 seconds
@@ -420,7 +479,7 @@ $(document).ready(function() {
         }
     };
 
-    $("document").on("click", ".quoteButton", function() {
+    $(document).on("click", ".quoteButton", function() {
         //empties previous gifs
         $(".gifs-container").empty();
         
