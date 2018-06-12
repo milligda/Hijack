@@ -502,7 +502,7 @@ $(document).ready(function() {
 
 
         // Now that someone has clicked to launch Alice after the lesson, we want the wiki search to come up.
-        $("#postAlice-btn").on("click", function () {   
+        $("#postAlice-btn").on("click", function (search) {   
 
 
             // take the input and complete the search from Wiki API.
@@ -522,13 +522,48 @@ $(document).ready(function() {
                 aliceSpeak(searchResult);
 
                 var afterSearch = 'I hope that was helpful. Would you like to learn about something else?';
+                var yes = $("button").addClass("yesBtn");
+                var no = $("button").addClass("noBtn");
 
                 // alice speaks the after search message, prompting the user for next step.
                 aliceSpeak(afterSearch);
 
+                // fade out the search box as Alice speaks
+                setTimeout(function() {
+                    $("#postAlice").fadeTo(1, 750)
+                }, 1000 * 2.5);
+
+                $("#yesNoBtns").append(yes);
+                $("#yesNoBtns").append(no);
+
                 console.log(searchResult);
+
+
+                // fade in the yes/no buttons
+                setTimeout(function() {
+                    $("#yesNoBtns").fadeTo(750, 1)
+                }, 1000 * 2.5);
+
+                
+                //what happens if user clicks yes or no below:
+
+                yes.on("click", function () {
+                    // fade out the buttons and fade in the search field again.
+                    setTimeout(function() {
+                        $("#yesNoBtns").fadeTo(1, 750)
+                    }, 1000 * 2.5);
+
+                    setTimeout(function() {
+                        $("#postAlice").fadeTo(750, 1)
+                    }, 1000 * 2.5);
+                });
+
+                no.on("click", function () {
+                    // same function as the exit button once that is finalized.
+                });
             });
         });
+
         //Create an 'Exit' button while in postLesson Alice.
         var exit = $("<button>").addClass("exit").text("Exit");
         $("#postAlice").append(exit);
