@@ -432,7 +432,7 @@ $(document).ready(function() {
         }, 500);
 
         // call the function to get the background to start changing;
-aliceBG();  
+        aliceBG();  
 
         // Alice says the helloAgain message.
         var helloAgain = 'hello again. What would you like to learn more about?';
@@ -504,6 +504,5 @@ aliceBG();
         setInterval(aliceBG, 1500)
 
     };
-
     
 });
