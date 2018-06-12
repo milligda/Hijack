@@ -417,15 +417,22 @@ $(document).ready(function() {
 
     // On Post Alice button click...
     $("#afterLesson").on("click", function () {
-        
+
         // Enter back into the Alice screen
         $("#test-container").empty();
+        $("header").empty();
+        $(".gif-container").empty();
+
+        $("#postAlice").show();
 
         // Fade into experience again.
         // Make background gray and fade in the text and search box
         $("body").animate({
-            backgroundColor: "#555555",
-        }, bgAnimationLength);
+            backgroundColor: '#555',
+        }, 500);
+
+        // call the function to get the background to start changing;
+aliceBG();  
 
         // Alice says the helloAgain message.
         var helloAgain = 'hello again. What would you like to learn more about?';
@@ -439,10 +446,8 @@ $(document).ready(function() {
 
 
         // Now that someone has clicked to launch Alice after the lesson, we want the wiki search to come up.
-        $("#postAlice-btn").on("click", function () {
+        $("#postAlice-btn").on("click", function () {   
 
-            // call the function to get the background to start changing;
-            bgGradient();
 
             // take the input and complete the search from Wiki API.
             var searchTerm = $("#searchTerm").val().trim();
@@ -482,32 +487,23 @@ $(document).ready(function() {
     });
 
     // Function to make the background a rolling change of gradient
-    function bgGradient () {
+    function aliceBG () {
 
-        // set 2 colors to be chosen randomly. Their RGB values are chosen randomly using math.random
-        
-        var color1 = {
-            r: Math.floor(Math.random()*255 *0.3), 
-            g: Math.floor(Math.random()*255 *0.59), 
-            b: Math.floor(Math.random()*255 *0.11), 
-        };
+        // store random color in variable
+        var color1 = Math.floor(Math.random()*255); 
 
-        var color2 = {
-            r: Math.floor(Math.random()*255 *0.3), 
-            g: Math.floor(Math.random()*255 *0.59), 
-            b: Math.floor(Math.random()*255 *0.11), 
-        };
+        // get RGB value
+        color1Rgb = "rgb(" + color1 + ","+ color1 +"," + color1 + ")";
 
-        // putting together each of the randomly generated rgb values and making it one color.
-        color1.rgb = "rgb(" + color1.r + ","+ color1.g +"," + color1.b + ")";
-        color2.rgb = "rgb(" + color2.r + ","+ color2.g +"," + color2.b + ")";
-        console.log(color1.rgb);
-        console.log(color2.rgb);
+        console.log(color1Rgb);
 
-        //make the BG fade in and out 
         $("body").animate({
-            backgroundColor: "linear-gradient( " + color1.rgb + "," + color2.rgb + ")",
-        }, bgAnimationLength);
+            backgroundColor: color1Rgb,
+        }, 2000);
+        
+        setInterval(aliceBG, 1500)
+
     };
+
     
 });
