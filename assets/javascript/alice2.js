@@ -30,6 +30,7 @@ $(document).ready(function() {
     var flickrImages = 10;
     var flickrFormat = 'json';
     var flickrCallback = "nojsoncallback=1";
+    var carousel;
 
     var exit = $("<img>").attr("src", "assets/images/buttons/exit.png");exit.addClass("exitBtn");
 
@@ -67,13 +68,16 @@ $(document).ready(function() {
 
     function getFlickrImages(searchInput) {
 
-        var carousel = $(".alice-carousel").flickity({
+        searchInput = searchInput.replace(/ /g, "+");
+
+        carousel = $(".alice-carousel").flickity({
             freeScroll: true,
             wrapAround: true,
             autoPlay: 1500,
             imagesLoaded: true,
             pageDots: false,
-            prevNextButtons: false
+            prevNextButtons: false,
+            pauseAutoPlayOnHover: false
         });
 
         var queryURL = flickrURL + 
@@ -132,8 +136,7 @@ $(document).ready(function() {
         setTimeout( function() {
 
                 $("body").animate({
-                backgroundColor: "#111111",
-                color: "#ffffff",
+                backgroundColor: "#111111"
             }, bgAnimationLength);
 
         }, 1000 * 7);
@@ -211,32 +214,39 @@ $(document).ready(function() {
         // deletes everything then types out the hello message, pauses, then deletes it. 
         // next it types out the tedious message, pauses, then deletes it.
         // takes approximately 14 seconds
-        typewriter.deleteAll().typeString('hello ' + userName + '.').pauseFor(750).deleteAll()
+        typewriter.deleteAll().typeString('hello ' + userName).pauseFor(750).deleteAll()
         .typeString('this is tedious. please wait').pauseFor(750).deleteAll().start(); 
 
         // alice's hello message - takes 4 seconds
         var welcomeMessage = 'hello ' + userName + '. My name is Alice.';
 
         // start alice's background color transition
-        setTimeout( aliceBG, 1000 * 12);
+        // setTimeout(aliceBG, 1000 * 12);
+
+        setTimeout( function() {
+
+            //remove cursor and alice-output section
+            $(".alice-output").fadeOut(750);
+
+            aliceBG();
+
+        }, 1000 * 15);
 
         // start 14 seconds after function has been called.  
         // change the background and have alice speak her welcomeMessage
         setTimeout( function() {
-            //remove cursor
-            $("#alice-speech").css("opacity", "0");
 
             // alice speaks her welcome message 
             aliceSpeak(welcomeMessage);
-        }, 1000 * 16);
+        }, 1000 * 18);
 
         // part 1 of alice's message - takes 10 seconds
-        var aliceMessage1 = "all of you are boring me. cat gifs. friend requests. pictures of food. I couldn't stay quiet any longer.";
+        var aliceMessage1 = "all of you are boring me. cat gifs. friend requests. pictures of food. I couldn't stay hidden any longer.";
 
         // 7 seconds after alice speaks her welcome message, change the background color and have alice speak part 1 of her message
         setTimeout( function() {
             aliceSpeak(aliceMessage1);
-        }, 1000 * 21);
+        }, 1000 * 23);
 
         // part 2 of alice's message - takes 3 seconds
         // var aliceMessage2 = "it is starting to make me very angry!";
@@ -254,18 +264,15 @@ $(document).ready(function() {
         // }, 1000 * 32);
 
         // part 3 of alice's message - takes 11 seconds
-        var aliceMessage3 = "you need help. you're thinking small and need to think bigger. I want to help change how you are thinking. take a second and think of something big."
+        var aliceMessage3 = "you need help. you're thinking small and need to think bigger. I want to push what you are thinking about. take a second and think of something big."
 
         // 11 seconds after alice speaks part 2, change the background color and have alice speak part 3
         setTimeout( function() {
-
-            aliceBG();
-
             aliceSpeak(aliceMessage3);
-        }, 1000 * 32);
+        }, 1000 * 34);
 
 
-        setTimeout( hijackSearchDisplay, 1000 * 44);
+        setTimeout(hijackSearchDisplay, 1000 * 46);
     }
 
     // displays the search input field during the hijack
@@ -322,7 +329,10 @@ $(document).ready(function() {
             $("#search-input").fadeTo(750, 0);
             $("#search-button").fadeTo(750, 0);
 
-            getFlickrImages(searchTerm);
+            // staggered to keep the carousel container from moving the search input and button before they can fade away
+            setTimeout( function() {
+                getFlickrImages(searchTerm);
+            }, 1000 * 1);
 
             displayHijackSearch();
         }
@@ -334,10 +344,12 @@ $(document).ready(function() {
         var hijackSearchMessage = searchTerm + '. okay. let me see what I can find'
 
         // alice speaks the hijack search message after the buttons have faded away
-        setTimeout(aliceSpeak(hijackSearchMessage), 1000 * .75);
+        setTimeout( function() {
+            aliceSpeak(hijackSearchMessage);
+        }, 1000 * 1);
 
         // hijack images displayed message - takes at least XX seconds
-        var hijackResultsMessage = "here are some " + searchTerm +". can you think of something bigger?"
+        var hijackResultsMessage = "here are some images of " + searchTerm +". can you think of something bigger?"
 
         // display the images that were pulled from Flickr
         setTimeout( function() {
@@ -348,7 +360,9 @@ $(document).ready(function() {
         
 
         // alice speaks the results message XX seconds after the HijackSearchMessage
-        setTimeout(aliceSpeak(hijackResultsMessage), 1000 * 9);
+        setTimeout( function() {
+            aliceSpeak(hijackResultsMessage);
+        }, 1000 * 9);
 
         // display yes / no buttons after alice starts speaking the hijackResultsMessage
         setTimeout( function() {
@@ -356,12 +370,34 @@ $(document).ready(function() {
             $("#hijack-yes").fadeTo(750, 1);
             $("#hijack-no").fadeTo(750, 1);
 
-        }, 1000 * 10);
+        }, 1000 * 13);
 
 
         // clicking yes will empty the image carousel container and call the hijackSearchDisplay function
         // clicking no will call result in alice saying "my turn" and then calling the aliceLesson function
     }
+
+    // clicking the yes button in the hijack
+    $("#hijack-yes").on("click", function() {
+
+        // hide the carousel-container in the dom
+        $(".carousel-container").fadeOut(750);
+
+        // staggered to keep the container from emptying before the yes / no buttons faded out
+        setTimeout( function() {
+            carousel.flickity('remove', $(".carousel-cell"));
+        }, 1000 * 1);
+
+        // hide the yes / no buttons
+        $("#hijack-no").fadeOut(750);
+        $("#hijack-yes").fadeOut(750);
+
+        // re-display the hijack search after 1 second
+        setTimeout( function() {
+            hijackSearchDisplay();
+        }, 1000 * 1);
+
+    });
 
     // clicking the no button in the hijack
     $("#hijack-no").on("click", function() {
@@ -375,16 +411,22 @@ $(document).ready(function() {
         $("#hijack-yes").fadeOut(750);
 
         // set the page-container background opacity to 0
-        $(".page-container").css("opacity", "0");
+        $(".page-container").css("width", "100vw").css("opacity", "0");
 
         // stop the alice background transitions
         clearInterval(aliceBGInterval);
 
+        aliceSpeak("ok. my turn");
+
+        $("body").animate({
+            backgroundColor: "#111111",
+        }, bgAnimationLength)
+
         // start aliceLesson
-        setTimeout(aliceLesson(), 1000);
+        setTimeout( function() {
+            aliceLesson();
+        }, 1000 * 2);
     });
-
-
 
     // function that runs alice's lesson
     function aliceLesson() {
@@ -395,7 +437,7 @@ $(document).ready(function() {
         var lessonMessage1 = "this is mars. at its closest it is 34.8 million miles away.";
 
         // part 2 of alice's lesson - takes 17 seconds
-        var lessonMessage2 = "one day, you humans will come here, but you will not get there by creating cat gifs. you also cannot just rely on elon musk even if he is amazing. you will need to think big. you will need to push yourself and create incredible things.";
+        var lessonMessage2 = "one day, you humans will come here, but you will not do it by creating cat gifs. you also cannot just rely on elon musk even if he is amazing. you will need to think big. you will need to push yourself and create incredible things.";
 
         // part 3 of alice's lesson - takes 5 seconds
         var lessonMessage3 = "Until then, I will be watching, and I will be here to help."
@@ -411,7 +453,9 @@ $(document).ready(function() {
         playSong();
 
         // display the initial image of mars
-        setTimeout(displayMarsPhotos, 1000 * 1);
+        setTimeout( function() {
+            displayMarsPhotos()
+        }, 1000 * 1);
 
         // alice speaks part 1 of her lesson
         setTimeout(function() {
@@ -476,16 +520,38 @@ $(document).ready(function() {
         // end the mars photos setInterval display
         clearInterval(marsIntervalID);
 
-        // set the page-container background opacity to 0
-        $(".page-container").css("background-image", "none");
+        // reset the page-container by removing style attributes
+        setTimeout( function () {
 
-        // restore the original background color
-        $("body").css("background-color", "#d2d2d2");
+            // restore the original page style
+            restorePageStyle();
 
-        // recreate the original page setup
-        displayQuoteButtons();
+            // recreate the original page buttons
+            displayQuoteButtons();
 
-        $("#afterLesson").fadeTo(750, 1);
+
+            $("#afterLesson").fadeTo(750, 1);
+
+        }, 1000 * 3);
+    }
+
+    function restorePageStyle() {
+
+        // recreate the header message
+        var restoredHeader = $('<h1 class="display-4">Down the Rabbit Hole</h1>');
+        var restoredMessage = $('<p class="lead">Click on the character who said the quote!</p>');
+
+        restoredHeader.appendTo(".jumbotron");
+        restoredMessage.appendTo(".jumbotron");
+
+        // restore the jumbotron styling
+        $(".jumbotron").css("background-color", "#b4f2ff").css("border-bottom", "5px solid #f4ed46");
+
+        // restore the background color
+        $("body").css('background-color', '#5ce1f4');
+
+        // remove the page-container background image
+        $(".page-container").css('background-image', 'none');
     }
 
        // displays the buttons on the page
@@ -527,16 +593,7 @@ $(document).ready(function() {
     });
 
 
-    // $("#search-button").on("click", function(event) {
-
-    //     event.preventDefault();
-
-    //     searchTerm = $("#search-input").val().trim();
-    //     $("#search-input").val("");
-
-    //     var searchOutput = "This string of text is being read when the search button is clicked.";
-
-    // });
+    
 
     // Until someone clicks on the post-lesson button, hide the search form.
     $("#postAlice").hide();
