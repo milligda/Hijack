@@ -616,21 +616,24 @@ $(document).ready(function() {
 
                 no.on("click", function () {
                     // same function as the exit button once that is finalized.
+                    var exitMsg = 'Okay. You are now exiting. Thank you for your time.';
+                    aliceSpeak(exitMsg);
+                    $("#postAlice").hide();
+                    endHijack();
                 });
             });
         });
-
+        });
         //Create an 'Exit' button while in postLesson Alice.
         var exit = $("<button>").addClass("exit").text("Exit");
         $("#postAlice").append(exit);
 
         //When the user clicks the 'Exit' button, goes back to the home screen.
         exit.on("click", function () {
-            var exitMsg = 'Thank you.';
+            var exitMsg = 'You are now exiting. Thank you for your time.';
             aliceSpeak(exitMsg);
             $("#postAlice").hide();
             endHijack();
-        });
     });
 
     // Function to make the background a rolling change of gradient
