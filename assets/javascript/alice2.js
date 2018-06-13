@@ -31,6 +31,8 @@ $(document).ready(function() {
     var flickrFormat = 'json';
     var flickrCallback = "nojsoncallback=1";
 
+    var exit = $("<img>").attr("src", "assets/images/buttons/exit.png");exit.addClass("exitBtn");
+
     // loads the voices on page load so that the correct voice can be used when called
     speechSynthesis.onvoiceschanged = function() {
         voices = speechSynthesis.getVoices();
@@ -524,16 +526,21 @@ $(document).ready(function() {
 
     // Until someone clicks on the post-lesson button, hide the search form.
     $("#postAlice").hide();
+    $("#yesNoBtns").hide();
+
 
     // On Post Alice button click...
     $("#afterLesson").on("click", function () {
 
         // Enter back into the Alice screen
         $("#test-container").empty();
-        $("header").empty();
+        $(".container").empty();
         $(".gif-container").empty();
+        $("#afterLesson").hide();//make this fade out smoother
+        $("#askAlice").append(exit);
+        $("#searchTerm").show();
+        $("#postAlice-btn").show();
 
-        $("#postAlice").show();
 
         // Fade into experience again.
         // Make background gray and fade in the text and search box
@@ -576,28 +583,33 @@ $(document).ready(function() {
                 aliceSpeak(searchResult);
 
                 var afterSearch = 'I hope that was helpful. Would you like to learn about something else?';
-                var yes = $("button").addClass("yesBtn");
-                var no = $("button").addClass("noBtn");
+                // var yes = $("button").addClass("yesBtn");
+                // var no = $("button").addClass("noBtn");
 
                 // alice speaks the after search message, prompting the user for next step.
                 aliceSpeak(afterSearch);
 
                 // fade out the search box as Alice speaks
                 setTimeout(function() {
-                    $("#postAlice").fadeTo(1, 750)
+                    $("#postAlice").fadeTo(750, 0)
                 }, 1000 * 2.5);
 
-                $("#yesNoBtns").append(yes);
-                $("#yesNoBtns").append(no);
+                $("#postAlice").append(yes);
+                $("#postAlice").append(no);
 
                 console.log(searchResult);
 
 
                 // fade in the yes/no buttons
+                $("#yesBtn").show();
+                $("#noBtn").show();
+                console.log("showing?");
+
                 setTimeout(function() {
                     $("#yesNoBtns").fadeTo(750, 1)
                 }, 1000 * 2.5);
 
+                console.log("yes/no?");
                 
                 //what happens if user clicks yes or no below:
 
@@ -622,19 +634,18 @@ $(document).ready(function() {
             });
         });
         });
-        //Create an 'Exit' button while in postLesson Alice.
-        var exit = $("<button>").addClass("exit").text("Exit");
+        // show exit button in postLesson Alice.
         $("#postAlice").append(exit);
 
-        //When the user clicks the 'Exit' button, goes back to the home screen.
+        // When the user clicks the 'Exit' button, goes back to the home screen.
         exit.on("click", function () {
             var exitMsg = 'You are now exiting. Thank you for your time.';
             aliceSpeak(exitMsg);
-            $("#postAlice").hide();
             endHijack();
+            $("#postAlice").hide();
     });
 
-    // Function to make the background a rolling change of gradient
+    // Function to make the background a rolling change of color
     function aliceBG () {
 
         aliceBGInterval = setInterval( function() {
