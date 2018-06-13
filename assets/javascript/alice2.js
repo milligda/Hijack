@@ -136,8 +136,7 @@ $(document).ready(function() {
         setTimeout( function() {
 
                 $("body").animate({
-                backgroundColor: "#111111",
-                color: "#ffffff",
+                backgroundColor: "#111111"
             }, bgAnimationLength);
 
         }, 1000 * 7);
@@ -215,7 +214,7 @@ $(document).ready(function() {
         // deletes everything then types out the hello message, pauses, then deletes it. 
         // next it types out the tedious message, pauses, then deletes it.
         // takes approximately 14 seconds
-        typewriter.deleteAll().typeString('hello ' + userName + '.').pauseFor(750).deleteAll()
+        typewriter.deleteAll().typeString('hello ' + userName).pauseFor(750).deleteAll()
         .typeString('this is tedious. please wait').pauseFor(750).deleteAll().start(); 
 
         // alice's hello message - takes 4 seconds
@@ -521,16 +520,38 @@ $(document).ready(function() {
         // end the mars photos setInterval display
         clearInterval(marsIntervalID);
 
-        // set the page-container background opacity to 0
-        $(".page-container").css("background-image", "none");
+        // reset the page-container by removing style attributes
+        setTimeout( function () {
 
-        // restore the original background color
-        $("body").css("background-color", "#d2d2d2");
+            // restore the original page style
+            restorePageStyle();
 
-        // recreate the original page setup
-        displayQuoteButtons();
+            // recreate the original page buttons
+            displayQuoteButtons();
 
-        $("#afterLesson").fadeTo(750, 1);
+
+            $("#afterLesson").fadeTo(750, 1);
+
+        }, 1000 * 3);
+    }
+
+    function restorePageStyle() {
+
+        // recreate the header message
+        var restoredHeader = $('<h1 class="display-4">Down the Rabbit Hole</h1>');
+        var restoredMessage = $('<p class="lead">Click on the character who said the quote!</p>');
+
+        restoredHeader.appendTo(".jumbotron");
+        restoredMessage.appendTo(".jumbotron");
+
+        // restore the jumbotron styling
+        $(".jumbotron").css("background-color", "#b4f2ff").css("border-bottom", "5px solid #f4ed46");
+
+        // restore the background color
+        $("body").css('background-color', '#5ce1f4');
+
+        // remove the page-container background image
+        $(".page-container").css('background-image', 'none');
     }
 
        // displays the buttons on the page
@@ -572,16 +593,7 @@ $(document).ready(function() {
     });
 
 
-    // $("#search-button").on("click", function(event) {
-
-    //     event.preventDefault();
-
-    //     searchTerm = $("#search-input").val().trim();
-    //     $("#search-input").val("");
-
-    //     var searchOutput = "This string of text is being read when the search button is clicked.";
-
-    // });
+    
 
     // Until someone clicks on the post-lesson button, hide the search form.
     $("#postAlice").hide();
