@@ -6,6 +6,7 @@ $(document).ready(function() {
     var searchTermLength = 0;
     var bgAnimationLength = 2000;
     var marsIntervalID;
+    var aliceBGInterval;
     var marsPhotoID = 1;
     var typeText = document.getElementById('alice-speech');
     var typewriter = new Typewriter(typeText, {
@@ -174,7 +175,6 @@ $(document).ready(function() {
 
         // test the userName input to make sure that it is valid
         userNameLength = userName.length; 
-        console.log(userNameLength);
 
         // empty the name-input field
         $("#name-input").val("");
@@ -219,9 +219,7 @@ $(document).ready(function() {
             //remove cursor
             $("#alice-speech").css("opacity", "0");
             // change the background color
-            $("body").animate({
-                backgroundColor: "#555555",
-            }, bgAnimationLength);
+            aliceBG();
 
             // alice speaks her welcome message 
             aliceSpeak(welcomeMessage);
@@ -232,11 +230,6 @@ $(document).ready(function() {
 
         // 7 seconds after alice speaks her welcome message, change the background color and have alice speak part 1 of her message
         setTimeout( function() {
-
-            $("body").animate({
-                backgroundColor: "#BF0000",
-            }, bgAnimationLength);
-
             aliceSpeak(aliceMessage1);
         }, 1000 * 21);
 
@@ -246,8 +239,10 @@ $(document).ready(function() {
         // 11 seconds after alice speaks part 1, change the background color and have alice speak part 2
         setTimeout( function() {
 
+            clearInterval(aliceBGInterval);
+
             $("body").animate({
-                backgroundColor: "#7F0000",
+                backgroundColor: "#BF0000",
             }, bgAnimationLength);
 
             aliceSpeak(aliceMessage2);
@@ -259,9 +254,7 @@ $(document).ready(function() {
         // 5 seconds after alice speaks part 2, change the background color and have alice speak part 3
         setTimeout( function() {
 
-            $("body").animate({
-                backgroundColor: "#00B257",
-            }, bgAnimationLength);
+            aliceBG();
 
             aliceSpeak(aliceMessage3);
         }, 1000 * 37);
@@ -641,20 +634,20 @@ $(document).ready(function() {
     // Function to make the background a rolling change of gradient
     function aliceBG () {
 
-        // store random color in variable
-        var color1 = Math.floor(Math.random()*255); 
+        aliceBGInterval = setInterval( function() {
 
-        // get RGB value
-        color1Rgb = "rgb(" + color1 + ","+ color1 +"," + color1 + ")";
+            // store random color in variable
+            var color1 = Math.floor(Math.random()*(175 - 50)) + 50; 
 
-        console.log(color1Rgb);
+            // get RGB value
+            color1Rgb = "rgb(" + color1 + ","+ color1 +"," + color1 + ")";
 
-        $("body").animate({
-            backgroundColor: color1Rgb,
-        }, 2000);
-        
-        setInterval(aliceBG, 1500);
+            // animate the background
+            $("body").animate({
+                backgroundColor: color1Rgb,
+            }, 1000);
 
+        }, 1500);
     };
 
     // populate the initial buttons on the page when the page loads
