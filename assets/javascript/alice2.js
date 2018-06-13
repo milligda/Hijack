@@ -534,8 +534,8 @@ $(document).ready(function() {
 
         // Enter back into the Alice screen
         $("#test-container").empty();
-        $(".container").empty();
-        $(".gif-container").empty();
+        $(".container").css("opacity", "0");
+        $(".gif-container").css("opacity", "0");
         $("#afterLesson").hide();//make this fade out smoother
         $("#askAlice").append(exit);
         $("#searchTerm").show();
@@ -639,10 +639,8 @@ $(document).ready(function() {
 
         // When the user clicks the 'Exit' button, goes back to the home screen.
         exit.on("click", function () {
-            var exitMsg = 'You are now exiting. Thank you for your time.';
-            aliceSpeak(exitMsg);
+            endPostAlice();
             endHijack();
-            $("#postAlice").hide();
     });
 
     // Function to make the background a rolling change of color
@@ -666,5 +664,20 @@ $(document).ready(function() {
 
     // populate the initial buttons on the page when the page loads
     displayQuoteButtons();
+
+    function endPostAlice () {
+        var exitMsg = 'You are now exiting. Thank you for your time.';
+
+        aliceSpeak(exitMsg);
+        aliceBG().stop();
+        $("body").css("background-color", "#d2d2d2");
+        $("#postAlice").hide();
+        $("#yesNoBtns").hide();
+        $("#afterLesson").show();
+        $(".container").css("opacity", "1");
+        $(".gif-container").css("opacity", "1");
+        
+
+    }
     
 });
