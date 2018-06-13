@@ -131,3 +131,7 @@ h1 {
     margin-right: 10px;
     background: #333;
 }
+
+.carousel-container {
+    display: block;
+}

@@ -268,6 +268,8 @@ $(document).ready(function() {
     // displays the search input field during the hijack
     function hijackSearchDisplay(event) {
 
+        $(".carousel-container").fadeTo(750, 0);
+
         // instructions on what to search for - takes 2 seconds
         var aliceSearchQuestion = "what did you think of?"
 
@@ -337,7 +339,7 @@ $(document).ready(function() {
         // display the images that were pulled from Flickr
         setTimeout( function() {
 
-            $(".alice-carousel").fadeIn(750);
+            $(".carousel-container").fadeTo(750, 1);
 
         }, 1000 * 8);
         
@@ -535,7 +537,7 @@ $(document).ready(function() {
         $("header").empty();
         $(".gif-container").empty();
 
-        $("#postAlice").show();
+        // $("#postAlice").show();
 
         // Fade into experience again.
         // Make background gray and fade in the text and search box
@@ -646,13 +648,18 @@ $(document).ready(function() {
 
             // get RGB value
             color1Rgb = "rgb(" + color1 + ","+ color1 +"," + color1 + ")";
-
-            // animate the background
+            
             $("body").animate({
-                backgroundColor: color1Rgb,
-            }, 1000);
+                backgroundColor: '#333',
+            }, 1250);
 
-        }, 1500);
+            setTimeout( function() {
+                $("body").animate({
+                    backgroundColor: '#665F5C',
+                }, 750);
+            }, 2250)
+
+        }, 3000);
     };
 
     // populate the initial buttons on the page when the page loads
