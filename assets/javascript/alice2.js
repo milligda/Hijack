@@ -348,7 +348,7 @@ $(document).ready(function() {
             aliceSpeak(hijackSearchMessage);
         }, 1000 * 1);
 
-        // hijack images displayed message - takes at least XX seconds
+        // hijack images displayed message - takes at least 5 seconds
         var hijackResultsMessage = "here are some images of " + searchTerm +". can you think of something bigger?"
 
         // display the images that were pulled from Flickr
@@ -356,13 +356,13 @@ $(document).ready(function() {
 
             $(".carousel-container").fadeTo(750, 1);
 
-        }, 1000 * 8);
+        }, 1000 * 6);
         
 
         // alice speaks the results message XX seconds after the HijackSearchMessage
         setTimeout( function() {
             aliceSpeak(hijackResultsMessage);
-        }, 1000 * 9);
+        }, 1000 * 7);
 
         // display yes / no buttons after alice starts speaking the hijackResultsMessage
         setTimeout( function() {
@@ -370,7 +370,7 @@ $(document).ready(function() {
             $("#hijack-yes").fadeTo(750, 1);
             $("#hijack-no").fadeTo(750, 1);
 
-        }, 1000 * 13);
+        }, 1000 * 11);
 
 
         // clicking yes will empty the image carousel container and call the hijackSearchDisplay function
