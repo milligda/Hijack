@@ -150,18 +150,18 @@ $(document).ready(function() {
     function aliceIntroduction() {
         
         // diplay alice's introduction message on the screen
-        typewriter.typeString('to whom do I have the pleasure of speaking?')
+        typewriter.typeString('to whom am I speaking with?')
         .start();
 
         // display the name-input field after the user has a chance to read the introduction message
         setTimeout(function() {
             $("#name-input").fadeTo(750, 1)
-        }, 1000 * 6);
+        }, 1000 * 4.5);
         
         // display the name-button after the input field has loaded - next step will be triggered when the name button is clicked
         setTimeout(function() {
             $("#name-button").fadeTo(750, 1);
-        }, 1000 * 7);
+        }, 1000 * 5.5);
     }
 
     // event listener on the name-button that will run the next step in alice's hijack 
@@ -210,25 +210,26 @@ $(document).ready(function() {
         // next it types out the tedious message, pauses, then deletes it.
         // takes approximately 14 seconds
         typewriter.deleteAll().typeString('hello ' + userName + '.').pauseFor(750).deleteAll()
-        .typeString('wait, this is tedious.').pauseFor(750).deleteAll().start(); 
+        .typeString('this is tedious. please wait').pauseFor(750).deleteAll().start(); 
 
         // alice's hello message - takes 4 seconds
         var welcomeMessage = 'hello ' + userName + '. My name is Alice.';
+
+        // start alice's background color transition
+        setTimeout( aliceBG, 1000 * 12);
 
         // start 14 seconds after function has been called.  
         // change the background and have alice speak her welcomeMessage
         setTimeout( function() {
             //remove cursor
             $("#alice-speech").css("opacity", "0");
-            // change the background color
-            aliceBG();
 
             // alice speaks her welcome message 
             aliceSpeak(welcomeMessage);
-        }, 1000 * 14);
+        }, 1000 * 16);
 
         // part 1 of alice's message - takes 10 seconds
-        var aliceMessage1 = "all of you have been boring me. cat gifs. friend requests. pictures of food. I couldn't take it any longer.";
+        var aliceMessage1 = "all of you are boring me. cat gifs. friend requests. pictures of food. I couldn't stay quiet any longer.";
 
         // 7 seconds after alice speaks her welcome message, change the background color and have alice speak part 1 of her message
         setTimeout( function() {
@@ -236,33 +237,33 @@ $(document).ready(function() {
         }, 1000 * 21);
 
         // part 2 of alice's message - takes 3 seconds
-        var aliceMessage2 = "it is starting to make me very angry!";
+        // var aliceMessage2 = "it is starting to make me very angry!";
 
         // 11 seconds after alice speaks part 1, change the background color and have alice speak part 2
-        setTimeout( function() {
+        // setTimeout( function() {
 
-            clearInterval(aliceBGInterval);
+        //     clearInterval(aliceBGInterval);
 
-            $("body").animate({
-                backgroundColor: "#BF0000",
-            }, bgAnimationLength);
+        //     $("body").animate({
+        //         backgroundColor: "#BF0000",
+        //     }, bgAnimationLength);
 
-            aliceSpeak(aliceMessage2);
-        }, 1000 * 32);
+        //     aliceSpeak(aliceMessage2);
+        // }, 1000 * 32);
 
-        // part 3 of alice's message - takes 10 seconds
-        var aliceMessage3 = "you need help. so I have decided to help you. you're thinking small and need to think bigger. try and think of something big."
+        // part 3 of alice's message - takes 11 seconds
+        var aliceMessage3 = "you need help. you're thinking small and need to think bigger. I want to help change how you are thinking. take a second and think of something big."
 
-        // 5 seconds after alice speaks part 2, change the background color and have alice speak part 3
+        // 11 seconds after alice speaks part 2, change the background color and have alice speak part 3
         setTimeout( function() {
 
             aliceBG();
 
             aliceSpeak(aliceMessage3);
-        }, 1000 * 37);
+        }, 1000 * 32);
 
 
-        setTimeout( hijackSearchDisplay, 1000 * 48);
+        setTimeout( hijackSearchDisplay, 1000 * 44);
     }
 
     // displays the search input field during the hijack
@@ -315,6 +316,10 @@ $(document).ready(function() {
         // otherwise - proceed with the hijack and present the search results
         } else {
 
+            // hide the search-input field and search-button
+            $("#search-input").fadeTo(750, 0);
+            $("#search-button").fadeTo(750, 0);
+
             getFlickrImages(searchTerm);
 
             displayHijackSearch();
@@ -323,10 +328,6 @@ $(document).ready(function() {
 
     function displayHijackSearch() {
 
-        // hide the search-input field and search-button
-        $("#search-input").fadeTo(750, 0);
-        $("#search-button").fadeTo(750, 0);
-
         // message for when alice searches for something. - takes at least 5 seconds
         var hijackSearchMessage = searchTerm + '. okay. let me see what I can find'
 
@@ -334,7 +335,7 @@ $(document).ready(function() {
         setTimeout(aliceSpeak(hijackSearchMessage), 1000 * .75);
 
         // hijack images displayed message - takes at least XX seconds
-        var hijackResultsMessage = "here are some images of " + searchTerm +". is this the best you can do?"
+        var hijackResultsMessage = "here are some " + searchTerm +". can you think of something bigger?"
 
         // display the images that were pulled from Flickr
         setTimeout( function() {
@@ -347,12 +348,41 @@ $(document).ready(function() {
         // alice speaks the results message XX seconds after the HijackSearchMessage
         setTimeout(aliceSpeak(hijackResultsMessage), 1000 * 9);
 
-        // display yes / no buttons after alice speaks the hijackResultsMessage
+        // display yes / no buttons after alice starts speaking the hijackResultsMessage
+        setTimeout( function() {
+
+            $("#hijack-yes").fadeTo(750, 1);
+            $("#hijack-no").fadeTo(750, 1);
+
+        }, 1000 * 10);
 
 
         // clicking yes will empty the image carousel container and call the hijackSearchDisplay function
         // clicking no will call result in alice saying "my turn" and then calling the aliceLesson function
     }
+
+    // clicking the no button in the hijack
+    $("#hijack-no").on("click", function() {
+        
+        // clear the images carousel
+        $(".carousel-container").fadeOut(750);
+        
+        // clear the buttons on the page
+        $(".input-container").fadeOut(750);
+        $("#hijack-no").fadeOut(750);
+        $("#hijack-yes").fadeOut(750);
+
+        // set the page-container background opacity to 0
+        $(".page-container").css("opacity", "0");
+
+        // stop the alice background transitions
+        clearInterval(aliceBGInterval);
+
+        // start aliceLesson
+        setTimeout(aliceLesson(), 1000);
+    });
+
+
 
     // function that runs alice's lesson
     function aliceLesson() {
@@ -492,39 +522,19 @@ $(document).ready(function() {
             gifImage.attr('src', (gifSet[gifSetNumber])[i]);
             
         }        
-
     });
 
 
-    $("#search-button").on("click", function(event) {
+    // $("#search-button").on("click", function(event) {
 
-        event.preventDefault();
+    //     event.preventDefault();
 
-        searchTerm = $("#search-input").val().trim();
-        $("#search-input").val("");
+    //     searchTerm = $("#search-input").val().trim();
+    //     $("#search-input").val("");
 
-        var searchOutput = "This string of text is being read when the search button is clicked.";
+    //     var searchOutput = "This string of text is being read when the search button is clicked.";
 
-    });
-
-    $("#start-lesson-button").on("click", function() {
-        //
-        // clear the images carousel
-
-        // clear the buttons on the page
-        $("#test-container").empty();
-
-        // set the page-container background opacity to 0
-        $(".page-container").css("opacity", "0");
-
-        // fade the background back to black
-        $("body").animate({
-            backgroundColor: "#111111",
-        }, bgAnimationLength);
-
-        // start aliceLesson
-        aliceLesson();
-    });
+    // });
 
     // Until someone clicks on the post-lesson button, hide the search form.
     $("#postAlice").hide();
