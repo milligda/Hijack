@@ -69,7 +69,9 @@ $(document).ready(function() {
             freeScroll: true,
             wrapAround: true,
             autoPlay: 1500,
-            imagesLoaded: true
+            imagesLoaded: true,
+            pageDots: false,
+            prevNextButtons: false
         });
 
         var queryURL = flickrURL + 
