@@ -124,7 +124,7 @@ h1 {
 }
 
 #afterLesson {
-    display: none;
+    /* display: none; */
     position: fixed;
     bottom: 20px;
     right: 20px;
