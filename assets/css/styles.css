@@ -60,8 +60,7 @@ body {
 }
 
 #name-input, #name-button, #search-input, #search-button, #searchTerm, #postAlice-btn, 
-#hijack-yes, #hijack-no, 
-.yesBtn, .noBtn {
+#hijack-yes, #hijack-no, #reset-button {
     display: none;
     font-family: 'VT323', monospace;
     font-size: 20px;
@@ -74,6 +73,16 @@ body {
 
 #name-input {
     margin-top: 20px;
+}
+
+#reset-button {
+    position: fixed;
+    bottom: 20px;
+    left: 20px;
+    padding: 5px 10px;
+    font-size: 18px;
+    min-width: 60px;
+    cursor: pointer;
 }
 
 #alice-speech {
@@ -134,6 +143,7 @@ h1 {
 }
 
 .exitBtn {
+    display: none;
     position: fixed;
     bottom: 20px;
     right: 20px;
