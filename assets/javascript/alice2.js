@@ -661,15 +661,32 @@ $(document).ready(function() {
         setTimeout(function() {
             $("#postAlice").fadeTo(750, 1)
         }, 1000 * 3.5);
+    });
 
-        // Now that someone has clicked to launch Alice after the lesson, we want the wiki search to come up.
-        $("#postAlice-btn").on("click", function (search) {   
+    // Now that someone has clicked to launch Alice after the lesson, we want the wiki search to come up.
+    $("#postAlice-btn").on("click", function (search) {   
 
-            // take the input and complete the search from Wiki API.
-            var searchTerm = $("#searchTerm").val().trim();
+        // take the input and complete the search from Wiki API.
+        var searchTerm = $("#searchTerm").val().trim();
+        var termLength = searchTerm.length;
 
-            // empty the search input field
-            $("#searchTerm").val("");
+        // empty the search input field
+        $("#searchTerm").val("");
+
+        // if the search term is longer than 64 characters, say an message
+        if (termLength > 64) {
+            
+            var searchLongErrorMessage = "that seems very long. you should try again";
+            aliceSpeak(searchLongErrorMessage);
+
+        // if the search term includes unusual special characters, say an error message
+        } else if (/^[a-zA-Z0-9 , _]*$/.test(searchTerm) == false) {
+
+            var searchCharErrorMessage = "you have included invalid special characters. try again";
+            aliceSpeak(searchCharErrorMessage);
+
+        // otherwise - proceed with the hijack and present the search results
+        } else {
 
             // fade in the reset button
             $("#reset-button").fadeTo(750, 1);
@@ -680,14 +697,14 @@ $(document).ready(function() {
             // get wikipedia information for the search input
             getWikiInfo(searchTerm);
 
-             // display the images that were pulled from Flickr
+                // display the images that were pulled from Flickr
             setTimeout( function() {
 
                 $(".carousel-container").fadeIn(750);
                 getFlickrImages(searchTerm);
 
             }, 1000 * 1);
-        });
+        }
     });
 
     // when the user clicks the reset button, display
