@@ -113,14 +113,65 @@ $(document).ready(function() {
         });
     }
 
+    // Function to make the background a rolling change of color
+    function aliceBG () {
+
+        aliceBGInterval = setInterval( function() {
+
+            $("body").animate({
+                backgroundColor: '#333',
+            }, 1250);
+
+            setTimeout( function() {
+                $("body").animate({
+                    backgroundColor: '#665F5C',
+                }, 750);
+            }, 2250);
+
+        }, 3000);
+    };
+
+    // displays the initial buttons on the page
+    function displayQuoteButtons() {
+    
+        $(".container").css("opacity", "1");
+
+        for (var i = 0; i < quotes.length; i++) {
+            
+            // create the button element
+            var button = $("<button>");
+
+            // add the class and ID's to the buttons
+            button.addClass('btn btn-light quoteButton');
+            button.attr('value', i);
+            // set the text for the button
+            button.text(quotes[i]);
+
+            // add the button to the correct container on the page
+            button.appendTo(".jumbotron-fluid");
+        }
+    };
+    
+    $(document).on("click", ".quoteButton", function() {
+
+        //empties previous gifs
+        $(".gifs-container").empty();
+        
+        //runs through gif arrays and appends them to page
+        var gifSetNumber = $(this).val();
+        for (var i = 0; i < gifSet[gifSetNumber].length; i++) {
+
+            var gifImage = $("<img>");
+            gifImage.addClass("rounded float-left gifButton");
+            gifImage.appendTo(".gifs-container");
+            gifImage.attr('src', (gifSet[gifSetNumber])[i]);
+        }        
+    });
+
     // starts the hijack
     $(document).on("click", ".gifButton", function() {
 
-        // empty the jumbotron page container, remove it's css formatting
-        $(".jumbotron").empty().css("background-color", "transparent").css("border-bottom", "none");
-
-        // empty the gifs-container
-        $(".gifs-container").empty();
+        clearPage();
 
         // change the background to the blue error screen
         $("body").css('background-color', '#2067B2');
@@ -129,6 +180,18 @@ $(document).ready(function() {
         aliceAppears();
 
     });
+
+    function clearPage() {
+
+        // empty the jumbotron page container, remove it's css formatting
+        $(".jumbotron").empty().css("background-color", "transparent").css("border-bottom", "none");
+
+        // empty the gifs-container
+        $(".gifs-container").empty();
+
+        // hide postAlice button if visible
+        $("#afterLesson").hide();
+    }
 
     function aliceAppears() {
 
@@ -220,58 +283,39 @@ $(document).ready(function() {
         // alice's hello message - takes 4 seconds
         var welcomeMessage = 'hello ' + userName + '. My name is Alice.';
 
-        // start alice's background color transition
-        // setTimeout(aliceBG, 1000 * 12);
-
+        // remove the cursor and start alice's background color transition
         setTimeout( function() {
 
             //remove cursor and alice-output section
             $(".alice-output").fadeOut(750);
 
+            // start the alice background color transition
             aliceBG();
 
         }, 1000 * 15);
 
-        // start 14 seconds after function has been called.  
-        // change the background and have alice speak her welcomeMessage
+        // start 14 seconds after function has been called - have alice speak her welcomeMessage
         setTimeout( function() {
-
-            // alice speaks her welcome message 
             aliceSpeak(welcomeMessage);
         }, 1000 * 18);
 
         // part 1 of alice's message - takes 10 seconds
         var aliceMessage1 = "all of you are boring me. cat gifs. friend requests. pictures of food. I couldn't stay hidden any longer.";
 
-        // 7 seconds after alice speaks her welcome message, change the background color and have alice speak part 1 of her message
+        // 6 seconds after alice speaks her welcome message, have alice speak part 1 of her message
         setTimeout( function() {
             aliceSpeak(aliceMessage1);
         }, 1000 * 23);
 
-        // part 2 of alice's message - takes 3 seconds
-        // var aliceMessage2 = "it is starting to make me very angry!";
+        // part 2 of alice's message - takes 11 seconds
+        var aliceMessage2 = "you need help. you're thinking small and need to think bigger. I want to push what you are thinking about. take a second and think of something big."
 
-        // 11 seconds after alice speaks part 1, change the background color and have alice speak part 2
-        // setTimeout( function() {
-
-        //     clearInterval(aliceBGInterval);
-
-        //     $("body").animate({
-        //         backgroundColor: "#BF0000",
-        //     }, bgAnimationLength);
-
-        //     aliceSpeak(aliceMessage2);
-        // }, 1000 * 32);
-
-        // part 3 of alice's message - takes 11 seconds
-        var aliceMessage3 = "you need help. you're thinking small and need to think bigger. I want to push what you are thinking about. take a second and think of something big."
-
-        // 11 seconds after alice speaks part 2, change the background color and have alice speak part 3
+        // 11 seconds after alice speaks part 1, have alice speak part 3
         setTimeout( function() {
-            aliceSpeak(aliceMessage3);
+            aliceSpeak(aliceMessage2);
         }, 1000 * 34);
 
-
+        // call the hijackSearchDisplay after alice said the last message
         setTimeout(hijackSearchDisplay, 1000 * 46);
     }
 
@@ -348,7 +392,7 @@ $(document).ready(function() {
             aliceSpeak(hijackSearchMessage);
         }, 1000 * 1);
 
-        // hijack images displayed message - takes at least XX seconds
+        // hijack images displayed message - takes at least 5 seconds
         var hijackResultsMessage = "here are some images of " + searchTerm +". can you think of something bigger?"
 
         // display the images that were pulled from Flickr
@@ -356,13 +400,12 @@ $(document).ready(function() {
 
             $(".carousel-container").fadeTo(750, 1);
 
-        }, 1000 * 8);
+        }, 1000 * 6);
         
-
         // alice speaks the results message XX seconds after the HijackSearchMessage
         setTimeout( function() {
             aliceSpeak(hijackResultsMessage);
-        }, 1000 * 9);
+        }, 1000 * 7);
 
         // display yes / no buttons after alice starts speaking the hijackResultsMessage
         setTimeout( function() {
@@ -370,11 +413,7 @@ $(document).ready(function() {
             $("#hijack-yes").fadeTo(750, 1);
             $("#hijack-no").fadeTo(750, 1);
 
-        }, 1000 * 13);
-
-
-        // clicking yes will empty the image carousel container and call the hijackSearchDisplay function
-        // clicking no will call result in alice saying "my turn" and then calling the aliceLesson function
+        }, 1000 * 11);
     }
 
     // clicking the yes button in the hijack
@@ -520,16 +559,13 @@ $(document).ready(function() {
         // end the mars photos setInterval display
         clearInterval(marsIntervalID);
 
-        // reset the page-container by removing style attributes
+        // reset the page-container after a set amount of time to account for processes still running in the setInterval
         setTimeout( function () {
 
             // restore the original page style
             restorePageStyle();
 
-            // recreate the original page buttons
-            displayQuoteButtons();
-
-
+            // display the button to access Alice
             $("#afterLesson").fadeTo(750, 1);
 
         }, 1000 * 3);
@@ -552,93 +588,61 @@ $(document).ready(function() {
 
         // remove the page-container background image
         $(".page-container").css('background-image', 'none');
+
+        // populate the quote buttons
+        displayQuoteButtons();
     }
-
-       // displays the buttons on the page
-    function displayQuoteButtons() {
-        
-        $(".container").css("opacity", "1");
-
-        for (var i = 0; i < quotes.length; i++) {
-            
-            // create the button element
-            var button = $("<button>");
-
-            // add the class and ID's to the buttons
-            button.addClass('btn btn-light quoteButton');
-            button.attr('value', i);
-            // set the text for the button
-            button.text(quotes[i]);
-
-            // add the button to the correct container on the page
-            button.appendTo(".jumbotron-fluid");
-
-        }
-    };
-
-    $(document).on("click", ".quoteButton", function() {
-        //empties previous gifs
-        $(".gifs-container").empty();
-        
-        //runs through gif arrays and appends them to page
-        var gifSetNumber = $(this).val();
-        for (var i = 0; i < gifSet[gifSetNumber].length; i++) {
-
-            var gifImage = $("<img>");
-            gifImage.addClass("rounded float-left gifButton");
-            gifImage.appendTo(".gifs-container");
-            gifImage.attr('src', (gifSet[gifSetNumber])[i]);
-            
-        }        
-    });
-
-
-    
-
-    // Until someone clicks on the post-lesson button, hide the search form.
-    $("#postAlice").hide();
-    $("#yesNoBtns").hide();
-
 
     // On Post Alice button click...
     $("#afterLesson").on("click", function () {
 
+        // function to remove buttons and styling
+        clearPage();
+
+        // hide the alice-output and input containers to fix item positioning on the page
+        $(".alice-output").fadeOut(500);
+        $(".input-container").fadeOut(500);
+
         // Enter back into the Alice screen
-        $("#test-container").empty();
-        $(".container").css("opacity", "0");
-        $(".gif-container").css("opacity", "0");
-        $("#afterLesson").hide();//make this fade out smoother
         $("#askAlice").append(exit);
         $("#searchTerm").show();
         $("#postAlice-btn").show();
 
+        // make sure the carousel container is present in the DOM
+        $(".carousel-container").fadeIn(500);
 
         // Fade into experience again.
-        // Make background gray and fade in the text and search box
+        // Make background black and fade in the text and search box
         $("body").animate({
-            backgroundColor: '#555',
+            backgroundColor: '#111',
         }, 500);
 
         // call the function to get the background to start changing;
-        aliceBG();  
+        // aliceBG();  
 
         // Alice says the helloAgain message.
         var helloAgain = 'hello again. What would you like to learn more about?';
 
-        aliceSpeak(helloAgain);
+        setTimeout( function() {
+            aliceSpeak(helloAgain);
+        }, 1000 * 2);
 
         // Fade in the search box.
         setTimeout(function() {
             $("#postAlice").fadeTo(750, 1)
-        }, 1000 * 2.5);
-
+        }, 1000 * 3.5);
 
         // Now that someone has clicked to launch Alice after the lesson, we want the wiki search to come up.
         $("#postAlice-btn").on("click", function (search) {   
 
-
             // take the input and complete the search from Wiki API.
             var searchTerm = $("#searchTerm").val().trim();
+
+            // empty the search input field
+            $("#searchTerm").val("");
+
+            // display images for the searchTerm
+            getFlickrImages(searchTerm);
             
             var queryURL = "https://en.wikipedia.org/w/api.php?action=opensearch&search=" + searchTerm + "&origin=*&prop=info&rvprop=content&format=json&formatversion=2";
           
@@ -708,52 +712,59 @@ $(document).ready(function() {
         // show exit button in postLesson Alice.
         $("#postAlice").append(exit);
 
-        // When the user clicks the 'Exit' button, goes back to the home screen.
-        exit.on("click", function () {
-            endPostAlice();
-            endHijack();
+    // When the user clicks the 'Exit' button, goes back to the home screen.
+    exit.on("click", function () {
+        endPostAlice();
     });
 
-    // Function to make the background a rolling change of color
-    function aliceBG () {
+    function endPostAlice () {
+        var exitMsg = 'Goodbye.';
 
-        aliceBGInterval = setInterval( function() {
+        // alice says the exit message
+        aliceSpeak(exitMsg);
 
-            // store random color in variable
-            var color1 = Math.floor(Math.random()*(175 - 50)) + 50; 
+        // stop the alice background transitions
+        clearInterval(aliceBGInterval);
 
-            // get RGB value
-            color1Rgb = "rgb(" + color1 + ","+ color1 +"," + color1 + ")";
-            
-            $("body").animate({
-                backgroundColor: '#333',
-            }, 1250);
+        // fade out the postAlice section - including the search input and button
+        $("#postAlice").fadeOut(750);
 
-            setTimeout( function() {
-                $("body").animate({
-                    backgroundColor: '#665F5C',
-                }, 750);
-            }, 2250)
+        // fade out the exit button
+        $(".exitBtn").fadeOut(750);
 
-        }, 3000);
-    };
+        // hide the carousel-container in the dom
+        $(".carousel-container").fadeOut(750);
 
-    // populate the initial buttons on the page when the page loads
+        // staggered to keep the container from emptying 
+        setTimeout( function() {
+            carousel.flickity('remove', $(".carousel-cell"));
+        }, 1000 * 1);
+
+        // reset the page-container after a set amount of time to account for processes still running in the setInterval
+        setTimeout( function () {
+
+            // restore the original page style
+            restorePageStyle();
+
+            // display the button to access Alice
+            $("#afterLesson").fadeTo(750, 1);
+
+        }, 1000 * 3);
+
+
+        // $("#postAlice").hide();
+        // $("#yesNoBtns").hide();
+        // $("#afterLesson").show();
+        // $(".container").css("opacity", "1");
+        // $(".gif-container").css("opacity", "1");
+    } 
+
+    // populate the initial buttons when the page loads
     displayQuoteButtons();
 
-    function endPostAlice () {
-        var exitMsg = 'You are now exiting. Thank you for your time.';
+    // Until someone clicks on the post-lesson button, hide the search form.
+    $("#postAlice").hide();
+    $("#yesNoBtns").hide();
 
-        aliceSpeak(exitMsg);
-        aliceBG().stop();
-        $("body").css("background-color", "#d2d2d2");
-        $("#postAlice").hide();
-        $("#yesNoBtns").hide();
-        $("#afterLesson").show();
-        $(".container").css("opacity", "1");
-        $(".gif-container").css("opacity", "1");
-        
 
-    }
-    
 });
