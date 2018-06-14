@@ -599,6 +599,10 @@ $(document).ready(function() {
         // function to remove buttons and styling
         clearPage();
 
+        // hide the alice-output and input containers to fix item positioning on the page
+        $(".alice-output").fadeOut(500);
+        $(".input-container").fadeOut(500);
+
         // Enter back into the Alice screen
         $("#askAlice").append(exit);
         $("#searchTerm").show();
@@ -611,7 +615,7 @@ $(document).ready(function() {
         }, 500);
 
         // call the function to get the background to start changing;
-        aliceBG();  
+        // aliceBG();  
 
         // Alice says the helloAgain message.
         var helloAgain = 'hello again. What would you like to learn more about?';
@@ -628,9 +632,14 @@ $(document).ready(function() {
         // Now that someone has clicked to launch Alice after the lesson, we want the wiki search to come up.
         $("#postAlice-btn").on("click", function (search) {   
 
-
             // take the input and complete the search from Wiki API.
             var searchTerm = $("#searchTerm").val().trim();
+
+            // empty the search input field
+            $("#searchTerm").val("");
+
+            // display images for the searchTerm
+            getFlickrImages(searchTerm);
             
             var queryURL = "https://en.wikipedia.org/w/api.php?action=opensearch&search=" + searchTerm + "&origin=*&prop=info&rvprop=content&format=json&formatversion=2";
           
@@ -719,6 +728,14 @@ $(document).ready(function() {
 
         // fade out the exit button
         $(".exitBtn").fadeOut(750);
+
+        // hide the carousel-container in the dom
+        $(".carousel-container").fadeOut(750);
+
+        // staggered to keep the container from emptying 
+        setTimeout( function() {
+            carousel.flickity('remove', $(".carousel-cell"));
+        }, 1000 * 1);
 
         // reset the page-container after a set amount of time to account for processes still running in the setInterval
         setTimeout( function () {
