@@ -608,6 +608,9 @@ $(document).ready(function() {
         $("#searchTerm").show();
         $("#postAlice-btn").show();
 
+        // make sure the carousel container is present in the DOM
+        $(".carousel-container").fadeIn(500);
+
         // Fade into experience again.
         // Make background black and fade in the text and search box
         $("body").animate({
