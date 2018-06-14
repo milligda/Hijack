@@ -680,7 +680,7 @@ $(document).ready(function() {
                 // fade out the search box as Alice speaks
                 setTimeout(function() {
                     $("#postAlice").fadeTo(750, 0)
-                }, 1000 * 2.5);
+                }, 1000 * 4);
 
 
                 console.log(searchResult);
@@ -688,11 +688,10 @@ $(document).ready(function() {
 
                 // fade in the search again button
                 $("#search-again-div").show();
-                $("#searchAgain").show();
 
                 setTimeout(function() {
                     $("#searchAgain").fadeTo(750, 1)
-                }, 1000 * 2.5);
+                }, 1000 * 4.5);
 
                 console.log("search again?");
 
@@ -701,14 +700,20 @@ $(document).ready(function() {
                 // if user clicks search again...
                 $("#searchAgain").on("click", function () {
 
-                    // fade out the search again button.
+                    // fade out the search again button and carousel.
                     setTimeout(function() {
                         $("#searchAgain").fadeTo(750, 0)
-                    }, 1000 * 2.5);
+                    }, 1000 * 1);
+
+                    setTimeout( function() {
+                        // $(".carousel-container").fadeTo(750, 0);
+                        carousel.flickity('remove', $(".carousel-cell"));
+                    }, 1000 * 1.5);
+
                     // Fade in the search box.
                     setTimeout(function() {
                         $("#postAlice").fadeTo(750, 1)
-                    }, 1000 * 3.5);
+                    }, 1000 * 2);
 
                 });
 
