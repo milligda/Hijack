@@ -32,7 +32,7 @@ $(document).ready(function() {
     var flickrCallback = "nojsoncallback=1";
     var carousel;
 
-    var exit = $("<img>").attr("src", "assets/images/buttons/exit.png");exit.addClass("exitBtn");
+    var exit = $("<img>").attr("src", "assets/images/buttons/exit.png");
 
     // loads the voices on page load so that the correct voice can be used when called
     speechSynthesis.onvoiceschanged = function() {
@@ -189,8 +189,9 @@ $(document).ready(function() {
         // empty the gifs-container
         $(".gifs-container").empty();
 
-        // hide postAlice button if visible
+        // hide postAlice button, exit button, and search again button if visible
         $("#afterLesson").hide();
+        
     }
 
     function aliceAppears() {
@@ -598,6 +599,8 @@ $(document).ready(function() {
         displayQuoteButtons();
     }
 
+// WHERE A FUNCTION SHOULD BE ________________________________________
+
     // On Post Alice button click...
     $("#afterLesson").on("click", function () {
 
@@ -609,9 +612,10 @@ $(document).ready(function() {
         $(".input-container").fadeOut(500);
 
         // Enter back into the Alice screen
-        $("#askAlice").append(exit);
+        $("#exit").show();
         $("#searchTerm").show();
         $("#postAlice-btn").show();
+        
 
         // make sure the carousel container is present in the DOM
         $(".carousel-container").fadeIn(500);
@@ -637,9 +641,15 @@ $(document).ready(function() {
             $("#postAlice").fadeTo(750, 1)
         }, 1000 * 3.5);
 
-        // Now that someone has clicked to launch Alice after the lesson, we want the wiki search to come up.
-        $("#postAlice-btn").on("click", function (search) {   
+        setTimeout(function() {
+            $("#exit-button").fadeTo(750, 1)
+        }, 1000 * 3.5);
 
+// WHERE A FUNCTION SHOULD BE ________________________________________
+
+        // Now that someone has clicked to launch Alice after the lesson, we want the wiki search to come up.
+        $("#postAlice-btn").on("click", function (searchTerm) {   
+            
             // take the input and complete the search from Wiki API.
             var searchTerm = $("#searchTerm").val().trim();
 
@@ -663,8 +673,6 @@ $(document).ready(function() {
                 aliceSpeak(searchResult);
 
                 var afterSearch = 'I hope that was helpful. Would you like to learn about something else?';
-                // var yes = $("button").addClass("yesBtn");
-                // var no = $("button").addClass("noBtn");
 
                 // alice speaks the after search message, prompting the user for next step.
                 aliceSpeak(afterSearch);
@@ -674,51 +682,43 @@ $(document).ready(function() {
                     $("#postAlice").fadeTo(750, 0)
                 }, 1000 * 2.5);
 
-                $("#postAlice").append(yes);
-                $("#postAlice").append(no);
 
                 console.log(searchResult);
 
 
-                // fade in the yes/no buttons
-                $("#yesBtn").show();
-                $("#noBtn").show();
-                console.log("showing?");
+                // fade in the search again button
+                $("#search-again-div").show();
+                $("#searchAgain").show();
 
                 setTimeout(function() {
-                    $("#yesNoBtns").fadeTo(750, 1)
+                    $("#searchAgain").fadeTo(750, 1)
                 }, 1000 * 2.5);
 
-                console.log("yes/no?");
-                
-                //what happens if user clicks yes or no below:
+                console.log("search again?");
 
-                yes.on("click", function () {
-                    // fade out the buttons and fade in the search field again.
+// WHERE A FUNCTION SHOULD BE ________________________________________
+
+                // if user clicks search again...
+                $("#searchAgain").on("click", function () {
+
+                    // fade out the search again button.
                     setTimeout(function() {
-                        $("#yesNoBtns").fadeTo(1, 750)
+                        $("#searchAgain").fadeTo(750, 0)
                     }, 1000 * 2.5);
-
+                    // Fade in the search box.
                     setTimeout(function() {
                         $("#postAlice").fadeTo(750, 1)
-                    }, 1000 * 2.5);
+                    }, 1000 * 3.5);
+
                 });
 
-                no.on("click", function () {
-                    // same function as the exit button once that is finalized.
-                    var exitMsg = 'Okay. You are now exiting. Thank you for your time.';
-                    aliceSpeak(exitMsg);
-                    $("#postAlice").hide();
-                    endHijack();
-                });
             });
         });
         });
-        // show exit button in postLesson Alice.
-        $("#postAlice").append(exit);
 
     // When the user clicks the 'Exit' button, goes back to the home screen.
-    exit.on("click", function () {
+    
+    $("#exit-button").on("click", function () {
         endPostAlice();
     });
 
@@ -735,7 +735,10 @@ $(document).ready(function() {
         $("#postAlice").fadeOut(750);
 
         // fade out the exit button
-        $(".exitBtn").fadeOut(750);
+        $("#exit").fadeOut(750);
+
+        // hide the search again button
+        $("#search-again-div").fadeOut(750);
 
         // hide the carousel-container in the dom
         $(".carousel-container").fadeOut(750);
@@ -757,11 +760,6 @@ $(document).ready(function() {
         }, 1000 * 3);
 
 
-        // $("#postAlice").hide();
-        // $("#yesNoBtns").hide();
-        // $("#afterLesson").show();
-        // $(".container").css("opacity", "1");
-        // $(".gif-container").css("opacity", "1");
     } 
 
     // populate the initial buttons when the page loads
@@ -769,7 +767,8 @@ $(document).ready(function() {
 
     // Until someone clicks on the post-lesson button, hide the search form.
     $("#postAlice").hide();
-    $("#yesNoBtns").hide();
+    $("#exit").hide();
+    $("#search-again-div").hide();
 
 
 });
