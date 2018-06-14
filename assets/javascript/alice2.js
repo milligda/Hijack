@@ -443,6 +443,11 @@ $(document).ready(function() {
         
         // clear the images carousel
         $(".carousel-container").fadeOut(750);
+
+        // staggered to keep the container from emptying before the carousel fades out
+        setTimeout( function() {
+            carousel.flickity('remove', $(".carousel-cell"));
+        }, 1000 * 1);
         
         // clear the buttons on the page
         $(".input-container").fadeOut(750);
@@ -618,7 +623,7 @@ $(document).ready(function() {
         }, 500);
 
         // call the function to get the background to start changing;
-        // aliceBG();  
+        aliceBG();  
 
         // Alice says the helloAgain message.
         var helloAgain = 'hello again. What would you like to learn more about?';
