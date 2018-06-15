@@ -32,8 +32,6 @@ $(document).ready(function() {
     var flickrCallback = "nojsoncallback=1";
     var carousel;
 
-    var exit = $("<img>").attr("src", "assets/images/buttons/exit.png");exit.addClass("exitBtn");
-
     // loads the voices on page load so that the correct voice can be used when called
     speechSynthesis.onvoiceschanged = function() {
         voices = speechSynthesis.getVoices();
@@ -64,6 +62,36 @@ $(document).ready(function() {
 
         // Queue this utterance.
         window.speechSynthesis.speak(msg);
+    }
+
+    function getWikiInfo (searchTerm) {
+
+        searchTerm = searchTerm.replace(/ /g, "+");
+
+        var queryURL = "https://en.wikipedia.org/w/api.php?action=opensearch&search=" + searchTerm + "&origin=*&prop=info&rvprop=content&format=json&formatversion=2";
+          
+        $.ajax ( {
+            url: queryURL,
+            method: "GET"
+        }).then(function(response) {
+            console.log(response);
+
+            var searchResult = response[2]["0"];
+
+            // alice speaks the search result information.
+            setTimeout( function() {
+                aliceSpeak(searchResult);
+            }, 1000 * 1);
+
+            var afterSearch = 'I hope that was helpful.';
+
+            // alice speaks the after search message.
+            setTimeout( function() {
+                aliceSpeak(afterSearch);
+            }, 1000 * 2);
+
+            console.log(searchResult);
+        });
     }
 
     function getFlickrImages(searchInput) {
@@ -612,12 +640,9 @@ $(document).ready(function() {
         $(".input-container").fadeOut(500);
 
         // Enter back into the Alice screen
-        $("#askAlice").append(exit);
+        $(".exitBtn").show();
         $("#searchTerm").show();
         $("#postAlice-btn").show();
-
-        // make sure the carousel container is present in the DOM
-        $(".carousel-container").fadeIn(500);
 
         // Fade into experience again.
         // Make background black and fade in the text and search box
@@ -639,89 +664,82 @@ $(document).ready(function() {
         setTimeout(function() {
             $("#postAlice").fadeTo(750, 1)
         }, 1000 * 3.5);
+    });
 
-        // Now that someone has clicked to launch Alice after the lesson, we want the wiki search to come up.
-        $("#postAlice-btn").on("click", function (search) {   
+    // Now that someone has clicked to launch Alice after the lesson, we want the wiki search to come up.
+    $("#postAlice-btn").on("click", function (search) {   
 
-            // take the input and complete the search from Wiki API.
-            var searchTerm = $("#searchTerm").val().trim();
+        // take the input and complete the search from Wiki API.
+        var searchTerm = $("#searchTerm").val().trim();
+        var termLength = searchTerm.length;
 
-            // empty the search input field
-            $("#searchTerm").val("");
+        // empty the search input field
+        $("#searchTerm").val("");
 
-            // display images for the searchTerm
-            getFlickrImages(searchTerm);
+        // if the search term is longer than 64 characters, say an message
+        if (termLength > 64) {
             
-            var queryURL = "https://en.wikipedia.org/w/api.php?action=opensearch&search=" + searchTerm + "&origin=*&prop=info&rvprop=content&format=json&formatversion=2";
-          
-            $.ajax ( {
-                url: queryURL,
-                method: "GET"
-            }).then(function(response) {
-                console.log(response);
+            var searchLongErrorMessage = "that seems very long. you should try again";
+            aliceSpeak(searchLongErrorMessage);
 
-                var searchResult = response[2]["0"];
+        // if the search term includes unusual special characters, say an error message
+        } else if (/^[a-zA-Z0-9 , _]*$/.test(searchTerm) == false) {
 
-                // alice speaks the search result information.
-                aliceSpeak(searchResult);
+            var searchCharErrorMessage = "you have included invalid special characters. try again";
+            aliceSpeak(searchCharErrorMessage);
 
-                var afterSearch = 'I hope that was helpful. Would you like to learn about something else?';
-                // var yes = $("button").addClass("yesBtn");
-                // var no = $("button").addClass("noBtn");
+        // otherwise - proceed with the hijack and present the search results
+        } else {
 
-                // alice speaks the after search message, prompting the user for next step.
-                aliceSpeak(afterSearch);
+            // fade in the reset button
+            $("#reset-button").fadeTo(750, 1);
 
-                // fade out the search box as Alice speaks
-                setTimeout(function() {
-                    $("#postAlice").fadeTo(750, 0)
-                }, 1000 * 2.5);
+            // fade out the search box as Alice speaks
+            $("#postAlice").fadeTo(750, 0);
 
-                $("#postAlice").append(yes);
-                $("#postAlice").append(no);
+            // get wikipedia information for the search input
+            getWikiInfo(searchTerm);
 
-                console.log(searchResult);
+                // display the images that were pulled from Flickr
+            setTimeout( function() {
 
+                $(".carousel-container").fadeIn(750);
+                getFlickrImages(searchTerm);
 
-                // fade in the yes/no buttons
-                $("#yesBtn").show();
-                $("#noBtn").show();
-                console.log("showing?");
+            }, 1000 * 1);
+        }
+    });
 
-                setTimeout(function() {
-                    $("#yesNoBtns").fadeTo(750, 1)
-                }, 1000 * 2.5);
+    // when the user clicks the reset button, display
+    $("#reset-button").on("click", function() {
 
-                console.log("yes/no?");
-                
-                //what happens if user clicks yes or no below:
+        // Alice says the helloAgain message.
+        var searchReset = 'What would you like to learn more about?';
 
-                yes.on("click", function () {
-                    // fade out the buttons and fade in the search field again.
-                    setTimeout(function() {
-                        $("#yesNoBtns").fadeTo(1, 750)
-                    }, 1000 * 2.5);
+        setTimeout( function() {
+            aliceSpeak(searchReset);
+        }, 1000 * 2);
 
-                    setTimeout(function() {
-                        $("#postAlice").fadeTo(750, 1)
-                    }, 1000 * 2.5);
-                });
+        // display the input field and button
+        setTimeout( function() {
+            $("#postAlice").fadeTo(750, 1);
+        }, 1000 * 2);
 
-                no.on("click", function () {
-                    // same function as the exit button once that is finalized.
-                    var exitMsg = 'Okay. You are now exiting. Thank you for your time.';
-                    aliceSpeak(exitMsg);
-                    $("#postAlice").hide();
-                    endHijack();
-                });
-            });
-        });
-        });
-        // show exit button in postLesson Alice.
-        $("#postAlice").append(exit);
+        // clear the flickr carousel
+        $(".carousel-container").fadeOut(750);
+
+        // staggered to keep the container from emptying 
+        setTimeout( function() {
+            carousel.flickity('remove', $(".carousel-cell"));
+        }, 1000 * 1);
+
+        // hide the reset button
+        $("#reset-button").fadeOut(750);
+
+    });
 
     // When the user clicks the 'Exit' button, goes back to the home screen.
-    exit.on("click", function () {
+    $(".exitBtn").on("click", function () {
         endPostAlice();
     });
 
@@ -739,6 +757,9 @@ $(document).ready(function() {
 
         // fade out the exit button
         $(".exitBtn").fadeOut(750);
+
+        // fade out the reset button if it's present
+        $("#reset-button").fadeOut(750);
 
         // hide the carousel-container in the dom
         $(".carousel-container").fadeOut(750);
@@ -758,13 +779,6 @@ $(document).ready(function() {
             $("#afterLesson").fadeTo(750, 1);
 
         }, 1000 * 3);
-
-
-        // $("#postAlice").hide();
-        // $("#yesNoBtns").hide();
-        // $("#afterLesson").show();
-        // $(".container").css("opacity", "1");
-        // $(".gif-container").css("opacity", "1");
     } 
 
     // populate the initial buttons when the page loads
@@ -772,7 +786,5 @@ $(document).ready(function() {
 
     // Until someone clicks on the post-lesson button, hide the search form.
     $("#postAlice").hide();
-    $("#yesNoBtns").hide();
-
 
 });
