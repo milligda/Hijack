@@ -174,8 +174,11 @@ $(document).ready(function() {
         clearPage();
 
         // change the background to the blue error screen
-        $("body").css('background-color', '#2067B2');
-        
+        $("body").css('background-color', '#1273AA');
+
+        // add blue screen image
+        $(".page-container").css("background-image", `url("assets/images/bsod-windows-8-0x5c-hal-initialization-failed-56a6f9d85f9b58b7d0e5cc3e.png")`);
+               
         // start alice
         aliceAppears();
 
@@ -197,7 +200,7 @@ $(document).ready(function() {
 
         // alice starts by transitioning the background color to a shade of black
         setTimeout( function() {
-
+                $(".page-container").css("background-image","none");
                 $("body").animate({
                 backgroundColor: "#111111"
             }, bgAnimationLength);
