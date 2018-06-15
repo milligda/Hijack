@@ -174,3 +174,10 @@ h1 {
 .carousel-container {
     display: block;
 }
+
+.bsodImage {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    width: 50%;
+}
