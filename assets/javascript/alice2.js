@@ -31,6 +31,7 @@ $(document).ready(function() {
     var flickrFormat = 'json';
     var flickrCallback = "nojsoncallback=1";
     var carousel;
+    var flickrResults;
 
     // loads the voices on page load so that the correct voice can be used when called
     speechSynthesis.onvoiceschanged = function() {
@@ -78,6 +79,10 @@ $(document).ready(function() {
 
             var searchResult = response[2]["0"];
 
+            if (searchResult.indexOf('refers to') > -1 || searchResult.indexOf('refer to')) {
+                searchResult = response[2]["1"];
+            }
+
             // alice speaks the search result information.
             setTimeout( function() {
                 aliceSpeak(searchResult);
@@ -95,6 +100,8 @@ $(document).ready(function() {
     }
 
     function getFlickrImages(searchInput) {
+
+        flickrResults = true;
 
         searchInput = searchInput.replace(/ /g, "+");
 
@@ -126,6 +133,10 @@ $(document).ready(function() {
         }).then(function(response) {
         
             var imagesArr = response.photos.photo;
+
+            if (imagesArr.length === 0) {
+                flickrResults = false;
+            }
         
             console.log(imagesArr);
         
@@ -424,7 +435,9 @@ $(document).ready(function() {
         }, 1000 * 1);
 
         // hijack images displayed message - takes at least 5 seconds
+
         var hijackResultsMessage = "here are some images of " + searchTerm +". can you think of something bigger?"
+        var hijackErrorMessage = "I couldn't find any images for " + searchTerm +". can you think of something else?"
 
         // display the images that were pulled from Flickr
         setTimeout( function() {
@@ -435,7 +448,13 @@ $(document).ready(function() {
         
         // alice speaks the results message XX seconds after the HijackSearchMessage
         setTimeout( function() {
-            aliceSpeak(hijackResultsMessage);
+            
+            if (flickrResults) {
+                aliceSpeak(hijackResultsMessage);
+            } else {
+                aliceSpeak(hijackErrorMessage);
+            }            
+
         }, 1000 * 7);
 
         // display yes / no buttons after alice starts speaking the hijackResultsMessage
