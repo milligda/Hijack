@@ -235,17 +235,7 @@ $(document).ready(function() {
         $("#afterLesson").hide();
     }
 
-    function resetAlice() {
-
-        // make sure the alice-output container is present
-        $(".alice-output").fadeIn(750);
-        
-    }
-
     function aliceAppears() {
-
-        // resetAlice so that users can click on the gifs again to go through the site again
-        resetAlice();
 
         // alice starts by transitioning the background color to a shade of black
         setTimeout( function() {
