@@ -79,7 +79,7 @@ $(document).ready(function() {
 
             var searchResult = response[2]["0"];
 
-            if (searchResult.indexOf('refers to') > -1 || searchResult.indexOf('refer to')) {
+            if (searchResult.indexOf('refers to') > -1 || searchResult.indexOf('refer to') > -1) {
                 searchResult = response[2]["1"];
             }
 
@@ -330,6 +330,7 @@ $(document).ready(function() {
 
             //remove cursor and alice-output section
             $(".alice-output").fadeOut(750);
+            $(".alice-speech").fadeOut(750);
 
             // start the alice background color transition
             aliceBG();
